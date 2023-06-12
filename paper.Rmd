@@ -1,27 +1,40 @@
 ---
-title: "ToOoOlTiPs: An R Package for Customizable Tooltips in Interactive Graphics"
-date: "2022-11-09"
+title: "MassWateR: Improving quality control, analysis, and sharing of water quality data"
+date: "`r Sys.Date()`"
 abstract: >
   An abstract of less than 150 words.
 draft: true
 author:  
   # see ?rjournal_article for more information
-  - name: Quietest Quokka
-    affiliation: University of Little Mates
+  - name: Marcus W. Beck
+    affiliation: Tampa Bay Estuary Program
     address:
-    - Department of Letter Q
-    - Somewhere, Australia
-    url: https://www.britannica.com/animal/quokka
-    orcid: 0000-1721-1511-1101
-    email:  qquo@ulm.edu
-  - name: Bounciest Bilby
-    url: https://www.britannica.com/animal/bilby
-    email: bbil@ulm.edu
+    - 263 13th Ave S
+    - St. Petersburg, Florida, USA 33701
+    url: https://tbep.org
+    orcid: 0000-0002-4996-0059
+    email:  mbeck@tbep.org
+  - name: Benjamen Wetherill
+    url: https://www.acasak.com/
+    email: bwetherill@acasak.co
+    affiliation: ACASAK Consulting
+    address:
+    - Boston, Massachusetts, USA
     orcid: 0000-0002-0912-0225
-    affiliation: University of Little Mates
+  - name: Jillian Carr
+    url: https://www.mass.gov/orgs/massachusetts-bays-national-estuary-partnership
+    email: Jillian.Carr@umb.edu
+    affiliation: Massachusetts Bays National Estuary Partnership
     address:
-    - Department of Letter B
-    - Somewhere, Australia
+    - University of Massachusetts Boston, 100 Morrissey Blvd
+    - Boston, Massachusetts, USA 02125
+  - name: Pamela DiBona
+    url: https://www.mass.gov/orgs/massachusetts-bays-national-estuary-partnership
+    email: pamela.dibona@state.ma.us
+    affiliation: Massachusetts Bays National Estuary Partnership
+    address:
+    - University of Massachusetts Boston, 100 Morrissey Blvd
+    - Boston, Massachusetts, USA 02125
 type: package
 output: 
   rjtools::rjournal_web_article:
@@ -33,61 +46,49 @@ bibliography: RJreferences.bib
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
-library(plotly)
-library(ggplot2)
-library(palmerpenguins)
+library(MassWateR)
 ```
 
 # Introduction
 
-Interactive data graphics provides plots that allow users to interact them. One of the most basic types of interaction is through tooltips, where users are provided additional information about elements in the plot by moving the cursor over the plot.
+Water quality measurements provide the foundation of environmental monitoring programs designed to protect or restore aquatic resources. In the United States, most water quality monitoring programs are broadly guided by the federal Clean Water Act with the singular goal of restoring and maintaining the chemical, physical, and biological integrity of surface waters.  Numeric standards that define critical thresholds for protecting recreational, aquatic life, industrial, navigation and consumptive uses of the resource are often established, that, if exceeded based on water quality measurements, require additional regulatory action to ensure compliance. These standards are often developed at the state-level either using existing databases from long-term monitoring datasets, or data collected ad hoc from a variety of sources, where the former is atypical for most surface water bodies.  Many state or regional institutions that assess water quality rely on decentralized data sources, often combining datasets from local watershed groups or participatory science programs rather than a single database that contains adequate coverage for areas of interest. Use of these monitoring data in a regulatory context is not possible unless standard operating procedures are adopted and the data fulfill quality control requirements.   
 
-This paper will first review some R packages on interactive graphics and their tooltip implementations. A new package \CRANpkg{ToOoOlTiPs} that provides customized tooltips for plot, is introduced. Some example plots will then be given to showcase how these tooltips help users to better read the graphics. 
+Monitoring data of sufficient quantity and quality are critical to ensure precise and accurate representation of environmental conditions.  A significant bottleneck in the use of monitoring data for environmental assessment of surface waters is the ability to clearly indicate that the data fulfill applicable quality control (QC) criteria for inclusion in a consolidated database. Common QC checks for in situ field measurements or concentrations measured in the laboratory may include 1) comparison of the precision between replicate samples (duplicates), 2) comparison of a sample to a known concentration (spikes or instrument checks), and 3) precision of the measurement from an empty or blank sample (blanks).  An adequate number of QC samples must also be included in the dataset as a measure of "completeness".  These checks are often compiled in a single report for comparison to applicable standards.  For example, precision of duplicate samples for a given parameter must not vary 10%.   For local monitoring groups that lack the resources to develop robust and repeatable workflows, QC reports are often prepared manually before submitting the data for review by the appropriate regulatory agency.  This process is time-consuming and prone to errors, often limiting the amount of useful information that is submitted to formal databases.  
+
+The R statistical programming language offers a valuable software infrastructure for developing tools to improve the QC of water quality data.  The use of R with document generation systems offered through packages like \CRANpkg{knitr} and \CRANpkg{rmarkdown} can be leveraged to generate QC reports that follow a standard format for review by regulatory agencies.  These tools can also be used to format water quality data for submission to state or national water quality databases, such as the Water Quality Exchange (WQX) database maintained by the US Environmental Protection Agency.  This database is the largest source of monitoring data in the United States that includes information on hydrologic conditions and chemical, physical, and biological measurements.  Moreover, many environmental resource managers have the need to analysis status and trends in monitoring data and R packages such as \CRANpkg{ggplot2} offer insightful approaches to visualize numerous water quality records in a single graph. Integrating this functionality into a single package is expected to have wide ranging utility for anyone collecting surface water data and is likely to improve the quality and insights obtained from these data.  
+
+This paper describes the MassWateR package developed to improve how environmental professionals perform quality control, analysis, and sharing of monitoring data for surface waters.  The regional focus of the package is for monitoring data collected in Massachusetts, USA, with QC reports submitted to Massachusetts Department of Environmental Protection and data submitted to the national WQX database.  Although the initial conception of MassWateR was meant to address regional needs in Massachusetts, there is nothing specific in the package that prevents its use outside of the state as the QC checks and analyses are applied universally to data collected at locations elsewhere.  As such, this paper is written with emphasis on how the tools are broadly applicable to anyone interested in improving efficiency and reproducibility of QC checks, in addition to analysis of imported water quality data and submission to WQX as the largest source of water monitoring data in the US.  
 
 # Background
 
-Some packages on interactive graphics include \CRANpkg{plotly} [@plotly] that interfaces with Javascript for web-based interactive graphics, \CRANpkg{crosstalk} [@crosstalk] that specializes cross-linking elements across individual graphics.  The recent R Journal paper \CRANpkg{tsibbletalk} [@RJ-2021-050] provides a good example of including interactive graphics into an article for the journal. It has both a set of linked plots, and also an animated gif example, illustrating linking between time series plots and feature summaries.
+To our knowledge, there are no existing R packages on CRAN that can be used to facilitate QC of water quality data.  However, there are several that can be used to retrieve and analysis data from existing sources.  The \CRANpkg{dataRetrieval} package in particular has been used widely to retrieve data from the USEPA Water Quality Portal (WQP), which is the counterpart of the WQX system for accessing data submitted using the latter.  
 
-# Customizing tooltip design with \pkg{ToOoOlTiPs}
+Existing workflows or packages
 
-\pkg{ToOoOlTiPs} is a packages for customizing tooltips in interactive graphics, it features these possibilities.
+Good tools for data extraction - dataRetrieval, NADA package, https://cran.r-project.org/web/views/Hydrology.html
 
-# A gallery of tooltips examples
+Building the community of practice...
 
-The \CRANpkg{palmerpenguins} data [@palmerpenguins]  features three penguin species which has a lovely illustration by Alison Horst in Figure \@ref(fig:penguins-alison). 
+# Requirements for using MassWateR
 
-```{r penguins-alison, out.width = "100%", out.height = "30%", fig.cap = "Artwork by \\@allison\\_horst", fig.alt="A picture of three different penguins with their species: Chinstrap, Gentoo, and Adelie. "}
-knitr::include_graphics("penguins.png")
-```
+Make a case for a unified format, cannot cater to all, input checks are meant assist in this effort
 
-Table `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(tab:penguins-tab-interactive)', '\\@ref(tab:penguins-tab-static)'))` prints at the first few rows of the `penguins` data:
+# Read
 
-```{r penguins-tab-interactive, eval = knitr::is_html_output(), layout = "l-body-outset"}
-knitr::kable(head(penguins), format = "html", caption = "A basic table")
-```
+# Quality Control
 
-```{r penguins-tab-static, eval = knitr::is_latex_output()}
-knitr::kable(head(penguins), format = "latex", caption = "A basic table") %>% 
-  kableExtra::kable_styling(font_size = 7)
-```   
+# Analysis
 
-Figure `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(fig:penguins-plotly)', '\\@ref(fig:penguins-ggplot)'))` shows an `r ifelse(knitr::is_html_output(), 'interactive', '')` plot of the penguins data, made using the `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\CRANpkg{plotly}', '\\CRANpkg{ggplot2}'))` package. 
+# Data submission
 
-```{r penguins-plotly, echo = TRUE, fig.height = 5, fig.cap="A basic interactive plot made with the plotly package on palmer penguin data. Three species of penguins are plotted with bill depth on the x-axis and bill length on the y-axis. When hovering on a point, a tooltip will show the exact value of the bill depth and length for that point, along with the species name.", include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.alt = "A scatterplot of bill length against bill depth, both measured in millimetre. The three species are shown in different colours and loosely forms three clusters. Adelie has small bill length and large bill depth, Gentoo has small bill depth but large bill length, and Chinstrap has relatively large bill depth and bill length."}
-p <- penguins %>% 
-  ggplot(aes(x = bill_depth_mm, y = bill_length_mm, 
-             color = species)) + 
-  geom_point()
-ggplotly(p)
-```
+# Building a community and future work
 
-```{r penguins-ggplot, echo = TRUE, fig.height = 5, fig.cap="A basic non-interactive plot made with the ggplot2 package on palmer penguin data. Three species of penguins are plotted with bill depth on the x-axis and bill length on the y-axis. Visit the online article to access the interactive version made with the plotly package.", include=knitr::is_latex_output(), eval=knitr::is_latex_output()}
-penguins %>% 
-  ggplot(aes(x = bill_depth_mm, y = bill_length_mm, 
-             color = species)) + 
-  geom_point()
-```
+MassWater in other locations, expansion elsewhere
+
+Inclusion of historical data
+
+Inclusion for continuous monitoring data, consider outlier anlaysis, drift, biofouling, etc.
 
 # Summary
 
-We have displayed various tooltips that are available in the package \pkg{ToOoOlTiPs}. 
+# Acknowledgments

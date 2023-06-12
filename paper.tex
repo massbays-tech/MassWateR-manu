@@ -1,6 +1,6 @@
 % !TeX root = RJwrapper.tex
-\title{ToOoOlTiPs: An R Package for Customizable Tooltips in Interactive Graphics}
-\author{by Quietest Quokka and Bounciest Bilby}
+\title{MassWateR: Improving quality control, analysis, and sharing of water quality data}
+\author{by Marcus W. Beck, Benjamen Wetherill, Jillian Carr, and Pamela DiBona}
 
 \maketitle
 
@@ -11,113 +11,98 @@ An abstract of less than 150 words.
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
 
-Interactive data graphics provides plots that allow users to interact them. One of the most basic types of interaction is through tooltips, where users are provided additional information about elements in the plot by moving the cursor over the plot.
+Water quality measurements provide the foundation of environmental monitoring programs designed to protect or restore aquatic resources. In the United States, most water quality monitoring programs are broadly guided by the federal Clean Water Act with the singular goal of restoring and maintaining the chemical, physical, and biological integrity of surface waters. Numeric standards that define critical thresholds for protecting recreational, aquatic life, industrial, navigation and consumptive uses of the resource are often established, that, if exceeded based on water quality measurements, require additional regulatory action to ensure compliance. These standards are often developed at the state-level either using existing databases from long-term monitoring datasets, or data collected ad hoc from a variety of sources, where the former is atypical for most surface water bodies. Many state or regional institutions that assess water quality rely on decentralized data sources, often combining datasets from local watershed groups or participatory science programs rather than a single database that contains adequate coverage for areas of interest. Use of these monitoring data in a regulatory context is not possible unless standard operating procedures are adopted and the data fulfill quality control requirements.
 
-This paper will first review some R packages on interactive graphics and their tooltip implementations. A new package \CRANpkg{ToOoOlTiPs} that provides customized tooltips for plot, is introduced. Some example plots will then be given to showcase how these tooltips help users to better read the graphics.
+Monitoring data of sufficient quantity and quality are critical to ensure precise and accurate representation of environmental conditions. A significant bottleneck in the use of monitoring data for environmental assessment of surface waters is the ability to clearly indicate that the data fulfill applicable quality control (QC) criteria for inclusion in a consolidated database. Common QC checks for in situ field measurements or concentrations measured in the laboratory may include 1) comparison of the precision between replicate samples (duplicates), 2) comparison of a sample to a known concentration (spikes or instrument checks), and 3) precision of the measurement from an empty or blank sample (blanks). An adequate number of QC samples must also be included in the dataset as a measure of ``completeness''. These checks are often compiled in a single report for comparison to applicable standards. For example, precision of duplicate samples for a given parameter must not vary 10\%. For local monitoring groups that lack the resources to develop robust and repeatable workflows, QC reports are often prepared manually before submitting the data for review by the appropriate regulatory agency. This process is time-consuming and prone to errors, often limiting the amount of useful information that is submitted to formal databases.
+
+The R statistical programming language offers a valuable software infrastructure for developing tools to improve the QC of water quality data. The use of R with document generation systems offered through packages like \CRANpkg{knitr} and \CRANpkg{rmarkdown} can be leveraged to generate QC reports that follow a standard format for review by regulatory agencies. These tools can also be used to format water quality data for submission to state or national water quality databases, such as the Water Quality Exchange (WQX) database maintained by the US Environmental Protection Agency. This database is the largest source of monitoring data in the United States that includes information on hydrologic conditions and chemical, physical, and biological measurements. Moreover, many environmental resource managers have the need to analysis status and trends in monitoring data and R packages such as \CRANpkg{ggplot2} offer insightful approaches to visualize numerous water quality records in a single graph. Integrating this functionality into a single package is expected to have wide ranging utility for anyone collecting surface water data and is likely to improve the quality and insights obtained from these data.
+
+This paper describes the MassWateR package developed to improve how environmental professionals perform quality control, analysis, and sharing of monitoring data for surface waters. The regional focus of the package is for monitoring data collected in Massachusetts, USA, with QC reports submitted to Massachusetts Department of Environmental Protection and data submitted to the national WQX database. Although the initial conception of MassWateR was meant to address regional needs in Massachusetts, there is nothing specific in the package that prevents its use outside of the state as the QC checks and analyses are applied universally to data collected at locations elsewhere. As such, this paper is written with emphasis on how the tools are broadly applicable to anyone interested in improving efficiency and reproducibility of QC checks, in addition to analysis of imported water quality data and submission to WQX as the largest source of water monitoring data in the US.
 
 \hypertarget{background}{%
 \section{Background}\label{background}}
 
-Some packages on interactive graphics include \CRANpkg{plotly} (Sievert 2020) that interfaces with Javascript for web-based interactive graphics, \CRANpkg{crosstalk} (Cheng and Sievert 2021) that specializes cross-linking elements across individual graphics. The recent R Journal paper \CRANpkg{tsibbletalk} (Wang and Cook 2021) provides a good example of including interactive graphics into an article for the journal. It has both a set of linked plots, and also an animated gif example, illustrating linking between time series plots and feature summaries.
+To our knowledge, there are no existing R packages on CRAN that can be used to facilitate QC of water quality data. However, there are several that can be used to retrieve and analysis data from existing sources. The \CRANpkg{dataRetrieval} package in particular has been used widely to retrieve data from the USEPA Water Quality Portal (WQP), which is the counterpart of the WQX system for accessing data submitted using the latter.
 
-\hypertarget{customizing-tooltip-design-with}{%
-\section{\texorpdfstring{Customizing tooltip design with \pkg{ToOoOlTiPs}}{Customizing tooltip design with }}\label{customizing-tooltip-design-with}}
+Existing workflows or packages
 
-\pkg{ToOoOlTiPs} is a packages for customizing tooltips in interactive graphics, it features these possibilities.
+Good tools for data extraction - dataRetrieval, NADA package, \url{https://cran.r-project.org/web/views/Hydrology.html}
 
-\hypertarget{a-gallery-of-tooltips-examples}{%
-\section{A gallery of tooltips examples}\label{a-gallery-of-tooltips-examples}}
+Building the community of practice\ldots{}
 
-The \CRANpkg{palmerpenguins} data (Horst, Hill, and Gorman 2020) features three penguin species which has a lovely illustration by Alison Horst in Figure \ref{fig:penguins-alison}.
+\hypertarget{requirements-for-using-masswater}{%
+\section{Requirements for using MassWateR}\label{requirements-for-using-masswater}}
 
-\begin{figure}
-\includegraphics[width=1\linewidth,height=0.3\textheight]{penguins} \caption{Artwork by \@allison\_horst}\label{fig:penguins-alison}
-\end{figure}
+Make a case for a unified format, cannot cater to all, input checks are meant assist in this effort
 
-Table \ref{tab:penguins-tab-static} prints at the first few rows of the \texttt{penguins} data:
+\hypertarget{read}{%
+\section{Read}\label{read}}
 
-\begin{table}
+\hypertarget{quality-control}{%
+\section{Quality Control}\label{quality-control}}
 
-\caption{\label{tab:penguins-tab-static}A basic table}
-\centering
-\fontsize{7}{9}\selectfont
-\begin{tabular}[t]{l|l|r|r|r|r|l|r}
-\hline
-species & island & bill\_length\_mm & bill\_depth\_mm & flipper\_length\_mm & body\_mass\_g & sex & year\\
-\hline
-Adelie & Torgersen & 39.1 & 18.7 & 181 & 3750 & male & 2007\\
-\hline
-Adelie & Torgersen & 39.5 & 17.4 & 186 & 3800 & female & 2007\\
-\hline
-Adelie & Torgersen & 40.3 & 18.0 & 195 & 3250 & female & 2007\\
-\hline
-Adelie & Torgersen & NA & NA & NA & NA & NA & 2007\\
-\hline
-Adelie & Torgersen & 36.7 & 19.3 & 193 & 3450 & female & 2007\\
-\hline
-Adelie & Torgersen & 39.3 & 20.6 & 190 & 3650 & male & 2007\\
-\hline
-\end{tabular}
-\end{table}
+\hypertarget{analysis}{%
+\section{Analysis}\label{analysis}}
 
-Figure \ref{fig:penguins-ggplot} shows an plot of the penguins data, made using the \CRANpkg{ggplot2} package.
+\hypertarget{data-submission}{%
+\section{Data submission}\label{data-submission}}
 
-\begin{verbatim}
-penguins %>% 
-  ggplot(aes(x = bill_depth_mm, y = bill_length_mm, 
-             color = species)) + 
-  geom_point()
-\end{verbatim}
+\hypertarget{building-a-community-and-future-work}{%
+\section{Building a community and future work}\label{building-a-community-and-future-work}}
 
-\begin{figure}
-\centering
-\includegraphics{paper_files/figure-latex/penguins-ggplot-1.pdf}
-\caption{\label{fig:penguins-ggplot}A basic non-interactive plot made with the ggplot2 package on palmer penguin data. Three species of penguins are plotted with bill depth on the x-axis and bill length on the y-axis. Visit the online article to access the interactive version made with the plotly package.}
-\end{figure}
+MassWater in other locations, expansion elsewhere
+
+Inclusion of historical data
+
+Inclusion for continuous monitoring data, consider outlier anlaysis, drift, biofouling, etc.
 
 \hypertarget{summary}{%
 \section{Summary}\label{summary}}
 
-We have displayed various tooltips that are available in the package \pkg{ToOoOlTiPs}.
+\hypertarget{acknowledgments}{%
+\section{Acknowledgments}\label{acknowledgments}}
 
 \hypertarget{references}{%
-\section*{References}\label{references}}
-\addcontentsline{toc}{section}{References}
-
-\hypertarget{refs}{}
-\begin{CSLReferences}{1}{0}
-\leavevmode\vadjust pre{\hypertarget{ref-crosstalk}{}}%
-Cheng, Joe, and Carson Sievert. 2021. \emph{{crosstalk}: Inter-Widget Interactivity for HTML Widgets}. \url{https://CRAN.R-project.org/package=crosstalk}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-palmerpenguins}{}}%
-Horst, Allison Marie, Alison Presmanes Hill, and Kristen B Gorman. 2020. \emph{{palmerpenguins}: Palmer Archipelago (Antarctica) Penguin Data}. \url{https://allisonhorst.github.io/palmerpenguins/}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-plotly}{}}%
-Sievert, Carson. 2020. \emph{{Interactive Web-Based Data Visualizatio}n with r, Plotly, and Shiny}. Chapman; Hall/CRC. \url{https://plotly-r.com}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-RJ-2021-050}{}}%
-Wang, Earo, and Dianne Cook. 2021. {``Conversations in Time: Interactive Visualisation to Explore Structured Temporal Data.''} \emph{The R Journal}. \url{https://doi.org/10.32614/RJ-2021-050}.
-
-\end{CSLReferences}
+\section{References}\label{references}}
 
 \bibliography{RJreferences.bib}
 
 \address{%
-Quietest Quokka\\
-University of Little Mates\\%
-Department of Letter Q\\ Somewhere, Australia\\
+Marcus W. Beck\\
+Tampa Bay Estuary Program\\%
+263 13th Ave S\\ St.~Petersburg, Florida, USA 33701\\
 %
-\url{https://www.britannica.com/animal/quokka}\\%
-\textit{ORCiD: \href{https://orcid.org/0000-1721-1511-1101}{0000-1721-1511-1101}}\\%
-\href{mailto:qquo@ulm.edu}{\nolinkurl{qquo@ulm.edu}}%
+\url{https://tbep.org}\\%
+\textit{ORCiD: \href{https://orcid.org/0000-0002-4996-0059}{0000-0002-4996-0059}}\\%
+\href{mailto:mbeck@tbep.org}{\nolinkurl{mbeck@tbep.org}}%
 }
 
 \address{%
-Bounciest Bilby\\
-University of Little Mates\\%
-Department of Letter B\\ Somewhere, Australia\\
+Benjamen Wetherill\\
+ACASAK Consulting\\%
+Boston, Massachusetts, USA\\
 %
-\url{https://www.britannica.com/animal/bilby}\\%
+\url{https://www.acasak.com/}\\%
 \textit{ORCiD: \href{https://orcid.org/0000-0002-0912-0225}{0000-0002-0912-0225}}\\%
-\href{mailto:bbil@ulm.edu}{\nolinkurl{bbil@ulm.edu}}%
+\href{mailto:bwetherill@acasak.co}{\nolinkurl{bwetherill@acasak.co}}%
+}
+
+\address{%
+Jillian Carr\\
+Massachusetts Bays National Estuary Partnership\\%
+University of Massachusetts Boston, 100 Morrissey Blvd\\ Boston, Massachusetts, USA 02125\\
+%
+\url{https://www.mass.gov/orgs/massachusetts-bays-national-estuary-partnership}\\%
+%
+\href{mailto:Jillian.Carr@umb.edu}{\nolinkurl{Jillian.Carr@umb.edu}}%
+}
+
+\address{%
+Pamela DiBona\\
+Massachusetts Bays National Estuary Partnership\\%
+University of Massachusetts Boston, 100 Morrissey Blvd\\ Boston, Massachusetts, USA 02125\\
+%
+\url{https://www.mass.gov/orgs/massachusetts-bays-national-estuary-partnership}\\%
+%
+\href{mailto:pamela.dibona@state.ma.us}{\nolinkurl{pamela.dibona@state.ma.us}}%
 }
