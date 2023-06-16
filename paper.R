@@ -5,3 +5,7 @@
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 library(MassWateR)
 
+
+## ----workflow, fig.cap = 'Workflow demonstrating how a user could engage with the \\CRANpkg{MassWateR} package.  A user can apply one to any of the four steps depending on their need.  The first step, QC screening, is often iterative as a user can modify parts of the raw data based on input checks or outliers.  The second step can be used to create a QC report for submission to a regulatory agency.  The third step can create a formatted table for WQX submission.  The fourth step is data analysis and visualization, using \\CRANpkg{MassWateR} functions and downstream analysis with additional R packages and functions.  All steps require a formatted input file.  WQX: Water Quality Exchange; QC: Quality Control.', fig.alt='Workflow diagram showing four ways to engage with MassWateR', out.width='100%'----
+knitr::include_graphics('figs/workflow.png')
+
