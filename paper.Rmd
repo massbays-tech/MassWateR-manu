@@ -47,6 +47,10 @@ bibliography: RJreferences.bib
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 library(MassWateR)
+library(flextable)
+library(here)
+
+load(file = here('tabs/filerequirements.RData'))
 ```
 
 # Introduction
@@ -71,7 +75,11 @@ knitr::include_graphics('figs/workflow.png')
 
 No matter the user need, all data inputs to \CRANpkg{MassWateR} must follow a strict format.  Developing a workflow to accommodate data inputs from the dozens of potential users that organize data using different formats would have been impractical.  As such, the only limitation to using the package is to adhere to the formatting requirements for all input files.  Several [resources](https://massbays-tech.github.io/MassWateR/RESOURCES.html) are provided on the package web page to assist potential users in this effort.  These resources included several training activities that were conducted during package development and templates demonstrating the appropriate format and rationale.
 
-The required data files for using are shown in table xx, including the steps in the workflow in Figure \@ref(fig:workflow) when a file is required.  The files are each imported into R using specific `read` functions with relevant checks, explained in the next section.  These checks verify multiple requirements outlined in the template files, with informative errors or warnings returned to the console to prompt the user on the required action to remedy a potential.  Additionally, the `readMWRresultsview()` function...   
+The required data files for using \CRANpkg{MassWateR} are shown in table xx, including the files that apply to the workflow steps in Figure \@ref(fig:workflow).  The files are each imported into R using specific `read` functions with relevant checks, explained in the next section.  These checks verify multiple requirements outlined in the template files, with informative errors or warnings returned to the console to prompt the user on the required action to remedy a potential.  Additionally, the `readMWRresultsview()` function...   
+
+```{r}
+filerequirements
+```
 
 # Read
 
