@@ -41,13 +41,13 @@ output:
     self_contained: yes
     toc: no
 bibliography: RJreferences.bib
-
+preamble: \usepackage{amsmath, booktabs, caption, longtable}
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 library(MassWateR)
-library(flextable)
+library(gt)
 library(here)
 
 load(file = here('tabs/filerequirements.RData'))
@@ -77,8 +77,11 @@ No matter the user need, all data inputs to \CRANpkg{MassWateR} must follow a st
 
 The required data files for using \CRANpkg{MassWateR} are shown in table xx, including the files that apply to the workflow steps in Figure \@ref(fig:workflow).  The files are each imported into R using specific `read` functions with relevant checks, explained in the next section.  These checks verify multiple requirements outlined in the template files, with informative errors or warnings returned to the console to prompt the user on the required action to remedy a potential.  Additionally, the `readMWRresultsview()` function...   
 
-```{r}
+```{r, eval = knitr::is_html_output()}
 filerequirements
+```
+```{r, eval = knitr::is_latex_output()}
+filerequirements %>% tab_options(table.width = pct(90))
 ```
 
 # Read

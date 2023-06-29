@@ -4,7 +4,7 @@
 ## ----setup, include=FALSE-----------------------------------------------------
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 library(MassWateR)
-library(flextable)
+library(gt)
 library(here)
 
 load(file = here('tabs/filerequirements.RData'))
@@ -14,6 +14,9 @@ load(file = here('tabs/filerequirements.RData'))
 knitr::include_graphics('figs/workflow.png')
 
 
-## -----------------------------------------------------------------------------
-filerequirements
+## ---- eval = knitr::is_html_output()------------------------------------------
+#> filerequirements
+
+## ---- eval = knitr::is_latex_output()-----------------------------------------
+filerequirements %>% tab_options(table.width = pct(90))
 

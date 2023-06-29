@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2022.3.23)  17 JUN 2023 11:58
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2022.3.23)  29 JUN 2023 13:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -849,48 +849,68 @@ LaTeX Info: Redefining \addtolength on input line 81.
 \calc@Ccount=\count323
 \calc@Cskip=\skip74
 )
+(c:/Users/mbeck/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/longtable.st
+y
+Package: longtable 2021-09-01 v4.17 Multi-page Table package (DPC)
+\LTleft=\skip75
+\LTright=\skip76
+\LTpre=\skip77
+\LTpost=\skip78
+\LTchunksize=\count324
+\LTcapwidth=\dimen300
+\LT@head=\box68
+\LT@firsthead=\box69
+\LT@foot=\box70
+\LT@lastfoot=\box71
+\LT@gbox=\box72
+\LT@cols=\count325
+\LT@rows=\count326
+\c@LT@tables=\count327
+\c@LT@chunks=\count328
+\LT@p@ftn=\toks44
+)
 (c:/Users/mbeck/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3backend/l3backen
 d-pdftex.def
 File: l3backend-pdftex.def 2022-02-07 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count324
-\l__pdf_internal_box=\box68
+\l__color_backend_stack_int=\count329
+\l__pdf_internal_box=\box73
 )
 No file RJwrapper.aux.
 \openout1 = `RJwrapper.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 47.
-LaTeX Font Info:    ... okay on input line 47.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 47.
-LaTeX Font Info:    ... okay on input line 47.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 47.
-LaTeX Font Info:    ... okay on input line 47.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 47.
-LaTeX Font Info:    ... okay on input line 47.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 47.
-LaTeX Font Info:    ... okay on input line 47.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 47.
-LaTeX Font Info:    ... okay on input line 47.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 47.
-LaTeX Font Info:    ... okay on input line 47.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 47.
-LaTeX Font Info:    ... okay on input line 47.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 47.
-LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
 
 (c:/Users/mbeck/AppData/Roaming/TinyTeX/texmf-dist/tex/context/base/mkii/supp-p
 df.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count325
-\scratchdimen=\dimen300
-\scratchbox=\box69
-\nofMPsegments=\count326
-\nofMParguments=\count327
-\everyMPshowfont=\toks44
-\MPscratchCnt=\count328
-\MPscratchDim=\dimen301
-\MPnumerator=\count329
-\makeMPintoPDFobject=\count330
-\everyMPtoPDFconversion=\toks45
+\scratchcounter=\count330
+\scratchdimen=\dimen301
+\scratchbox=\box74
+\nofMPsegments=\count331
+\nofMParguments=\count332
+\everyMPshowfont=\toks45
+\MPscratchCnt=\count333
+\MPscratchDim=\dimen302
+\MPnumerator=\count334
+\makeMPintoPDFobject=\count335
+\everyMPtoPDFconversion=\toks46
 )
 (c:/Users/mbeck/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epsto
 pdf-base.sty
@@ -939,12 +959,12 @@ e
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Info: Redefining \microtypecontext on input line 47.
-Package microtype Info: Applying patch `item' on input line 47.
-Package microtype Info: Applying patch `toc' on input line 47.
-Package microtype Info: Applying patch `eqnum' on input line 47.
+LaTeX Info: Redefining \microtypecontext on input line 48.
+Package microtype Info: Applying patch `item' on input line 48.
+Package microtype Info: Applying patch `toc' on input line 48.
+Package microtype Info: Applying patch `eqnum' on input line 48.
 
-Package microtype Warning: Unable to apply patch `footnote' on input line 47.
+Package microtype Warning: Unable to apply patch `footnote' on input line 48.
 
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
@@ -952,7 +972,7 @@ Package microtype Info: Using default protrusion set `alltext'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `alltext-nott'.
-LaTeX Info: Redefining \showhyphens on input line 47.
+LaTeX Info: Redefining \showhyphens on input line 48.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -966,8 +986,8 @@ y
 Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
 tim
 )
-Package backref Info: ** backref set up for natbib ** on input line 47.
-Package hyperref Info: Link coloring ON on input line 47.
+Package backref Info: ** backref set up for natbib ** on input line 48.
+Package hyperref Info: Link coloring ON on input line 48.
 
 (c:/Users/mbeck/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/nameref.s
 ty
@@ -981,15 +1001,21 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 ettitlestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count331
+\c@section@level=\count336
 )
-LaTeX Info: Redefining \ref on input line 47.
-LaTeX Info: Redefining \pageref on input line 47.
-LaTeX Info: Redefining \nameref on input line 47.
+LaTeX Info: Redefining \ref on input line 48.
+LaTeX Info: Redefining \pageref on input line 48.
+LaTeX Info: Redefining \nameref on input line 48.
 \@outlinefile=\write5
 \openout5 = `RJwrapper.out'.
 
 Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: longtable package is loaded.
+
+(c:/Users/mbeck/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/caption/ltcaption.
+sty
+Package: ltcaption 2021/01/08 v1.4c longtable captions (AR)
+)
 Package caption Info: End \AtBeginDocument code.
 (./paper.tex [1{c:/Users/mbeck/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdft
 ex/updmap/pdftex.map}
@@ -1020,18 +1046,18 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `zi4' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-! Undefined control sequence.
-<argument> \Oldarrayrulewidth 
-                              
-l.37 ...ength{\Oldarrayrulewidth}{\arrayrulewidth}
-                                                   
+! Dimension too large.
+\LT@max@sel #1#2->{\ifdim #2=\wd \tw@ 
+                                      #1\else \number \c@LT@chunks \fi }{\th...
+l.47 \end{longtable}
+                     
 Here is how much of TeX's memory you used:
- 26402 strings out of 480236
- 488491 string characters out of 5894214
- 783747 words of memory out of 5000000
- 43734 multiletter control sequences out of 15000+600000
+ 26552 strings out of 480236
+ 491189 string characters out of 5894214
+ 835927 words of memory out of 5000000
+ 43879 multiletter control sequences out of 15000+600000
  492467 words of font info for 155 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 115i,11n,131p,1739b,641s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 115i,11n,131p,11057b,641s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 !  ==> Fatal error occurred, no output PDF file produced!

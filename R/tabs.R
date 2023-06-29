@@ -1,10 +1,8 @@
-library(flextable)
+library(gt)
 library(tidyverse)
 library(here)
 
 # file inputs ---------------------------------------------------------------------------------
-
-chkloc <- here(list.files('tabs', pattern = 'check', full.names = T))
 
 totab <- tibble(
   `Formatted file` = c('Results', 'DQO accuracy', 'DQO frequency and completeness', 'Sites', 'WQX metadata'), 
@@ -13,22 +11,45 @@ totab <- tibble(
   `QC reporting` = c('r', 'r', 'r', '', ''),
   `WQX formatting` = c('r', 'r', '', 'r', 'r'),
   `Data analysis` = c('r', 'r', '', 'r', '')
-) %>% 
-  mutate_at(vars(-`Formatted file`, -`Description`), function(x) gsub('^r$', chkloc, x))
+)
 
 colind <- apply(totab[, 3:6], 2, function(x) which(x != ''))
-imgsz <- 0.15
-tab <- flextable(totab) %>%
-  colformat_image(j = 3, i = colind[[1]], width = imgsz, height = imgsz) %>% 
-  colformat_image(j = 4, i = colind[[2]], width = imgsz, height = imgsz) %>% 
-  colformat_image(j = 5, i = colind[[3]], width = imgsz, height = imgsz) %>% 
-  colformat_image(j = 6, i = colind[[4]], width = imgsz, height = imgsz) %>% 
-  width(j = 2, width = 3) %>%
-  width(j = c(1, 3:6), width = 3.5 / 5) %>% 
-  bold(part = 'header') %>%
-  colformat_double(digits = 2) %>%
-  valign(valign = 'top', part = 'header') %>%
-  align(j = 3:6, align = 'center', part = 'all')
+imgfun <- function(x){
+  local_image(
+    filename = here(list.files('tabs', pattern = 'check', full.names = T)),
+    height = 10
+  )
+}
+tab <- gt(totab) %>%
+  text_transform(
+    locations = cells_body(columns = 3, rows = colind[[1]]),
+    fn = imgfun
+  ) %>% 
+  text_transform(
+    locations = cells_body(columns = 4, rows = colind[[2]]),
+    fn = imgfun
+  ) %>% 
+  text_transform(
+    locations = cells_body(columns = 5, rows = colind[[3]]),
+    fn = imgfun
+  ) %>% 
+  text_transform(
+    locations = cells_body(columns = 6, rows = colind[[4]]),
+    fn = imgfun
+  ) %>% 
+  cols_width(
+    Description ~ px(288), 
+    everything() ~ px(336/5)
+    )
+
+# 
+#   width(j = 2, width = 3) %>%
+#   width(j = c(1, 3:6), width = 3.5 / 5) %>% 
+#   bold(part = 'header') %>%
+#   colformat_double(digits = 2) %>%
+#   valign(valign = 'top', part = 'header') %>%
+#   align(j = 3:6, align = 'center', part = 'all')
+
 
 filerequirements <- tab
 save(filerequirements, file = here('tabs/filerequirements.RData'))
