@@ -73,15 +73,39 @@ Users can engage with \CRANpkg{MassWateR} to achieve different goals.  This desi
 knitr::include_graphics('figs/workflow.png')
 ```
 
-No matter the user need, all data inputs to \CRANpkg{MassWateR} must follow a strict format.  Developing a workflow to accommodate data inputs from the dozens of potential users that organize data using different formats would have been impractical.  As such, the only limitation to using the package is to adhere to the formatting requirements for all input files.  Several [resources](https://massbays-tech.github.io/MassWateR/RESOURCES.html) are provided on the package web page to assist potential users in this effort.  These resources included several training activities that were conducted during package development and templates demonstrating the appropriate format and rationale.
+No matter the user need, all data inputs to \CRANpkg{MassWateR} must follow a strict format.  Developing a workflow to accommodate data inputs from the dozens of potential users from different organizations that use different data formats would have been impractical.  As such, the only limitation to using the package is to adhere to the formatting requirements for all input files.  Several [resources](https://massbays-tech.github.io/MassWateR/RESOURCES.html) are provided on the package web page to assist potential users in this effort.  These resources included several training activities that were conducted during package development and templates demonstrating the appropriate format and rationale.
 
-The required data files for using \CRANpkg{MassWateR} are shown in table xx, including the files that apply to the workflow steps in Figure \@ref(fig:workflow).  The files are each imported into R using specific `read` functions with relevant checks, explained in the next section.  These checks verify multiple requirements outlined in the template files, with informative errors or warnings returned to the console to prompt the user on the required action to remedy a potential.  Additionally, the `readMWRresultsview()` function...   
+The required data files for using \CRANpkg{MassWateR} are shown in table xx, including the files that apply to the workflow steps in Figure \@ref(fig:workflow).  The files are each imported into R using specific `read` functions with relevant checks, explained in the next section.  These checks verify multiple requirements outlined in the template files, with informative errors or warnings returned to the console to prompt the user on the required action to remedy a formatting issue.  The largest input file required for all parts of the workflow in Figure \@ref(fig:workflow) is the results file.  This file includes all water quality monitoring data to be used with the package. As such, the formatting requirements are the most burdensome for potential uses and additional functions are available to assist with formatting.
 
 ```{r}
 filerequirements
 ```
 
+The following sections describe the basic approach to using functions in \CRANpkg{MassWateR} for any of the processes in the workflow.  The naming convention for the functions is meant to provide users with an intuitive format for understanding what each function does and the step of the workflow for which the function applies.  Although there are some exceptions to this nomenclature, the general format includes a prefix for each function as follows.  Each prefix also includes `MWR` to avoid namespace conflicts with other packages.  
+
+* `read`: Read input files
+* `check`: Check input files formatting issues, used internally to the read functions 
+* `form`: Format input files for downstream functions, used internally to the read functions once the checks have passed
+* `anlz`: Analyze imported data
+* `tab`: Create formatted tables for QC analysis
+* `qc`: QC functions for summarizing QC results, used internally to the table functions
+* `util`: Various utility functions that accomplish routine tasks
+
+Additionally, functions may often include a suffix that describes the relevant file that is used as input or otherwise evaluated in a downstream function.
+
+* `results`: The results input file
+* `acc`: The data quality objectives file for accuracy
+* `frecom`: The data quality objectives file for frequency and completeness
+* `sites`: The site metadata file
+* `wqx`: The Water Quality Exchange metadata file
+
 # Read
+
+The primary task of the `read` functions is to ensure all imported files follow the required format for the package.  The `read` functions use the `read_excel` function from the \CRANpkg{readxl} package as Excel files are the expected format for all inputs. The `read` functions do very little other than import the file - once the file is imported it is immediately passed to one of the relevant `check` functions inside the `read` function.  There are several checks for each type of input file, with the number of checks increasing based on the complexity of the input file.  Each check is printed to the R console on completion, whereas an error is returned at the first instance of a failed check and the function is exited.  The error will typically indicate which parts of the input data need to be changed to rectify the issue, often indicating a specific cell in the Excel file that requires attention. As such, the workflow is intended to be iterative, where a user imports a file, receives an error, manually changes the input file in Excel, then imports the data again until all checks pass.  Again, this design was purposeful as many monitoring agencies or groups collect data differently and a standard input format for the package was the best option to .  This may also encourage future standardization among groups for how data are maintained to ease formatting challenges to using \CRANpkg{MassWateR}. A user only needs to format their data once to use the package. 
+
+Figure showing iterative workflow to data import
+
+
 
 # Quality Control
 
