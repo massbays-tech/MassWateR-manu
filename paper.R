@@ -15,5 +15,51 @@ knitr::include_graphics('figs/workflow.png')
 
 
 ## -----------------------------------------------------------------------------
-filerequirements
+# filerequirements
+
+
+## ----importflow, fig.cap = 'Pseudocode demonstrating the iterative process of importing a required data file for \\CRANpkg{MassWateR}.  All read functions import an Excel file and the imported file is then passed to a check function.  The function exits if an error is encountered, allowing the user to manually fix the identified error and then import again.  After all checks are passed, a formatting function is applied to correct minor issues (e.g., standardize date format as YYYY-MM-DD) and the final data object is returned.', fig.alt='Diagram showing pseudocode for importing a data file with MassWateR', out.width='100%'----
+knitr::include_graphics('figs/importflow.png')
+
+
+## ---- echo = T, message = T---------------------------------------------------
+library(MassWateR)
+
+# import results data
+respth <- system.file("extdata/ExampleResults.xlsx", package = "MassWateR")
+resdat <- readMWRresults(respth)
+
+
+## ---- error = T, echo = T, message = T----------------------------------------
+chk <- resdat
+chk[4, 2] <- "Sample"
+chk[135, 2] <- "Field"
+checkMWRresults(chk)
+
+
+## ---- results = 'hide', echo = T----------------------------------------------
+library(MassWateR)
+
+# import results data
+respth <- system.file("extdata/ExampleResults.xlsx", package = "MassWateR")
+resdat <- readMWRresults(respth)
+
+# import dqo accuracy data
+accpth <- system.file("extdata/ExampleDQOAccuracy.xlsx", package = "MassWateR")
+accdat <- readMWRacc(accpth)
+
+# import dqo frequency and completeness data
+frecompth <- system.file("extdata/ExampleDQOFrequencyCompleteness.xlsx", package = "MassWateR")
+frecomdat <- readMWRfrecom(frecompth)
+
+# import site data
+sitpth <- system.file("extdata/ExampleSites.xlsx", package = "MassWateR")
+sitdat <- readMWRsites(sitpth)
+
+# import WQX meta data
+wqxpth <- system.file("extdata/ExampleWQX.xlsx", package = "MassWateR")
+wqxdat <- readMWRwqx(wqxpth)
+
+# a list of input data frames
+fsetls <- list(res = resdat, acc = accdat, frecom = frecomdat, sit = sitdat, wqx = wqxdat)
 

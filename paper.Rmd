@@ -77,19 +77,20 @@ No matter the user need, all data inputs to \CRANpkg{MassWateR} must follow a st
 
 The required data files for using \CRANpkg{MassWateR} are shown in table xx, including the files that apply to the workflow steps in Figure \@ref(fig:workflow).  The files are each imported into R using specific `read` functions with relevant checks, explained in the next section.  These checks verify multiple requirements outlined in the template files, with informative errors or warnings returned to the console to prompt the user on the required action to remedy a formatting issue.  The largest input file required for all parts of the workflow in Figure \@ref(fig:workflow) is the results file.  This file includes all water quality monitoring data to be used with the package. As such, the formatting requirements are the most burdensome for potential uses and additional functions are available to assist with formatting.
 
+table xx
 ```{r}
-filerequirements
+# filerequirements
 ```
 
 The following sections describe the basic approach to using functions in \CRANpkg{MassWateR} for any of the processes in the workflow.  The naming convention for the functions is meant to provide users with an intuitive format for understanding what each function does and the step of the workflow for which the function applies.  Although there are some exceptions to this nomenclature, the general format includes a prefix for each function as follows.  Each prefix also includes `MWR` to avoid namespace conflicts with other packages.  
 
 * `read`: Read input files
-* `check`: Check input files formatting issues, used internally to the read functions 
+* `check`: Check input files for formatting issues, used internally to the read functions 
 * `form`: Format input files for downstream functions, used internally to the read functions once the checks have passed
 * `anlz`: Analyze imported data
 * `tab`: Create formatted tables for QC analysis
 * `qc`: QC functions for summarizing QC results, used internally to the table functions
-* `util`: Various utility functions that accomplish routine tasks
+* `util`: Various utility functions that accomplish routine tasks, but may be useful as standalone functions
 
 Additionally, functions may often include a suffix that describes the relevant file that is used as input or otherwise evaluated in a downstream function.
 
@@ -97,21 +98,77 @@ Additionally, functions may often include a suffix that describes the relevant f
 * `acc`: The data quality objectives file for accuracy
 * `frecom`: The data quality objectives file for frequency and completeness
 * `sites`: The site metadata file
-* `wqx`: The Water Quality Exchange metadata file
+* `wqx`: The WQX metadata file
 
-# Read
+# \CRANpkg{MassWateR} functions
 
-The primary task of the `read` functions is to ensure all imported files follow the required format for the package.  The `read` functions use the `read_excel` function from the \CRANpkg{readxl} package as Excel files are the expected format for all inputs. The `read` functions do very little other than import the file - once the file is imported it is immediately passed to one of the relevant `check` functions inside the `read` function.  There are several checks for each type of input file, with the number of checks increasing based on the complexity of the input file.  Each check is printed to the R console on completion, whereas an error is returned at the first instance of a failed check and the function is exited.  The error will typically indicate which parts of the input data need to be changed to rectify the issue, often indicating a specific cell in the Excel file that requires attention. As such, the workflow is intended to be iterative, where a user imports a file, receives an error, manually changes the input file in Excel, then imports the data again until all checks pass.  Again, this design was purposeful as many monitoring agencies or groups collect data differently and a standard input format for the package was the best option to .  This may also encourage future standardization among groups for how data are maintained to ease formatting challenges to using \CRANpkg{MassWateR}. A user only needs to format their data once to use the package. 
+## Read
 
-Figure showing iterative workflow to data import
+The primary task of the `read` functions is to ensure all imported files follow the required format for the package.  The `read` functions use the `read_excel` function from the \CRANpkg{readxl} package as Excel files are the expected format for all inputs. The `read` functions do very little other than import the file - once the file is imported it is immediately passed to one of the relevant `check` functions inside the `read` function.  There are several checks for each type of input file, with the number of checks increasing based on the complexity of the input file.  Each check is printed to the R console on completion, whereas an error is returned at the first instance of a failed check, at which point the function is exited.  The error will typically indicate which parts of the input data need to be changed to rectify the issue, often indicating a specific cell in the Excel file that requires attention. As such, the workflow is intended to be iterative, where a user imports a file, receives an error, manually changes the input file in Excel, then imports the data again until all checks pass (Figure \@ref(fig:importflow)).  Again, this design was purposeful as many monitoring agencies and groups collect data differently and a standard input format for the package was the best option to accommodate potential users.  This may also encourage future standardization among groups for how data are maintained to ease formatting challenges to using \CRANpkg{MassWateR}. A user only needs to format their data once to use the package. 
 
+```{r importflow, fig.cap = 'Pseudocode demonstrating the iterative process of importing a required data file for \\CRANpkg{MassWateR}.  All read functions import an Excel file and the imported file is then passed to a check function.  The function exits if an error is encountered, allowing the user to manually fix the identified error and then import again.  After all checks are passed, a formatting function is applied to correct minor issues (e.g., standardize date format as YYYY-MM-DD) and the final data object is returned.', fig.alt='Diagram showing pseudocode for importing a data file with MassWateR', out.width='100%'}
+knitr::include_graphics('figs/importflow.png')
+```
 
+A correctly formatted input file would be imported as follows, with the messages in the console indicating the checks that are performed and that all checks were successful.  Below demonstrates what would be shown for the results file using an example dataset included with the package.  A total of fifteen checks are applied to the results file. 
 
-# Quality Control
+```{r, echo = T, message = T}
+library(MassWateR)
 
-# Analysis
+# import results data
+respth <- system.file("extdata/ExampleResults.xlsx", package = "MassWateR")
+resdat <- readMWRresults(respth)
+```
 
-# Data submission
+The following shows a typical error that might be returned if a check fails importing the results file.  The `resdat` object is an imported results file that has passed all checks, but incorrect entries are added to the `chk` object to demonstrate the error that is returned if a user would have attempted to import this file.  The `checkMWRresults()` function is run inside the `readMWRresults()` function and runs the checks (e.g., the column names are correct, all required columns are present), but then stops when invalid activity types in the `Activity Type` column are found.  In this example, a user would need to change the entries in rows 4 and 135 of the `Activity Type` column in their Excel file to fix the issue and import the file again as in Figure \@ref(fig:importflow).  The online [vignette](https://massbays-tech.github.io/MassWateR/articles/inputs.html#data-import-and-checks) specifies the valid entries. 
+
+```{r, error = T, echo = T, message = T}
+chk <- resdat
+chk[4, 2] <- "Sample"
+chk[135, 2] <- "Field"
+checkMWRresults(chk)
+```
+
+The `readMWRresultsview()` function is also available to assist with troubleshooting formatting issues for the results file.  This function exports an Excel file that shows the unique values that are found in each column to allow a user to quickly see potential incorrect entries.  The output is similar to running `apply(resdat, 2, unique)` in the console, but includes an external file that users may be more comfortable evaluating to troubleshoot formatting problems.  
+
+After all file format checks are fixed, a standard approach for using \CRANpkg{MassWateR} is to import all required files and save them as a list of named data frame objects that can be used by nearly all the package functions.  This prevents the need to identify which input datasets are needed for each function, although the latter approach could used because arguments for individual input files are also provided for all functions.  In the latter case, a path or data object can be used as input for each file. For the former approach, the beginning of a script for using the package could appear as follows.  Example files included with the package are imported, whereas a user will specify paths to their own files.   
+
+```{r, results = 'hide', echo = T}
+library(MassWateR)
+
+# import results data
+respth <- system.file("extdata/ExampleResults.xlsx", package = "MassWateR")
+resdat <- readMWRresults(respth)
+
+# import dqo accuracy data
+accpth <- system.file("extdata/ExampleDQOAccuracy.xlsx", package = "MassWateR")
+accdat <- readMWRacc(accpth)
+
+# import dqo frequency and completeness data
+frecompth <- system.file("extdata/ExampleDQOFrequencyCompleteness.xlsx", package = "MassWateR")
+frecomdat <- readMWRfrecom(frecompth)
+
+# import site data
+sitpth <- system.file("extdata/ExampleSites.xlsx", package = "MassWateR")
+sitdat <- readMWRsites(sitpth)
+
+# import WQX meta data
+wqxpth <- system.file("extdata/ExampleWQX.xlsx", package = "MassWateR")
+wqxdat <- readMWRwqx(wqxpth)
+
+# a list of input data frames
+fsetls <- list(res = resdat, acc = accdat, frecom = frecomdat, sit = sitdat, wqx = wqxdat)
+```
+
+The object `fsetls` can then be used as input to downstream functions.
+
+A final note about the data inputs is that many types of water quality measurements can be included for analysis, although the package is currently limited to working with discrete samples as compared to data from continuous monitoring equipment.  The `paramsMWR` dataset included with \CRANpkg{MassWateR} provides a complete list of the parameters that can be used with the package.  On data import, this list is referenced to ensure that only relevant parameters are included and that appropriate units of measurement are provided.  The list includes `r nrow(paramsMWR)` different parameters, each with multiple valid units of measurement.  Additionally, only one unit of measurement is allowed per parameter, which was an intentional design so that tedious functions for converting between dozens of units of measurement did not need to be created during package development.  It is not an unreasonable expectation for users to provide only one unit of measurement per parameter as processing laboratories typically have a standard reporting format based on the same methodology used for estimating concentrations of water quality parameters.   
+
+## Quality Control
+
+## Analysis
+
+## Data submission
 
 # Building a community and future work
 
