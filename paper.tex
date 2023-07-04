@@ -32,7 +32,7 @@ Users can engage with \CRANpkg{MassWateR} to achieve different goals. This desig
 
 No matter the user need, all data inputs to \CRANpkg{MassWateR} must follow a strict format. Developing a workflow to accommodate data inputs from the dozens of potential users from different organizations that use different data formats would have been impractical. As such, the only limitation to using the package is to adhere to the formatting requirements for all input files. Several \href{https://massbays-tech.github.io/MassWateR/RESOURCES.html}{resources} are provided on the package web page to assist potential users in this effort. These resources included several training activities that were conducted during package development and templates demonstrating the appropriate format and rationale.
 
-The required data files for using \CRANpkg{MassWateR} are shown in table xx, including the files that apply to the workflow steps in Figure \ref{fig:workflow}. The files are each imported into R using specific \texttt{read} functions with relevant checks, explained in the next section. These checks verify multiple requirements outlined in the template files, with informative errors or warnings returned to the console to prompt the user on the required action to remedy a formatting issue. The largest input file required for all parts of the workflow in Figure \ref{fig:workflow} is the results file. This file includes all water quality monitoring data to be used with the package. As such, the formatting requirements are the most burdensome for potential uses and additional functions are available to assist with formatting.
+The required data files for using \CRANpkg{MassWateR} are shown in table xx, including the files that apply to the workflow steps in Figure \ref{fig:workflow}. The files are each imported into R using specific \texttt{read} functions with relevant checks, explained in the next section. These checks verify multiple requirements outlined in the template files, with informative errors or warnings returned to the console to prompt the user on the required action to remedy a formatting issue. The largest input file required for all parts of the workflow in Figure \ref{fig:workflow} is the results file. This file includes all water quality monitoring data to be used with the package. As such, the formatting requirements are the most burdensome for potential users and additional functions are available to assist with formatting.
 
 table xx
 
@@ -56,7 +56,7 @@ The following sections describe the basic approach to using functions in \CRANpk
   \texttt{util}: Various utility functions that accomplish routine tasks, but may be useful as standalone functions
 \end{itemize}
 
-Additionally, functions may often include a suffix that describes the relevant file that is used as input or otherwise evaluated in a downstream function.
+Additionally, functions may often include a suffix that describes the relevant file used as input or otherwise evaluated in a downstream function.
 
 \begin{itemize}
 \tightlist
@@ -75,10 +75,10 @@ Additionally, functions may often include a suffix that describes the relevant f
 \hypertarget{functions}{%
 \section{\texorpdfstring{\CRANpkg{MassWateR} functions}{ functions}}\label{functions}}
 
-\hypertarget{read}{%
-\subsection{Read}\label{read}}
+\hypertarget{read-and-check-files}{%
+\subsection{Read and check files}\label{read-and-check-files}}
 
-The primary task of the \texttt{read} functions is to ensure all imported files follow the required format for the package. The \texttt{read} functions use the \texttt{read\_excel} function from the \CRANpkg{readxl} package as Excel files are the expected format for all inputs. The \texttt{read} functions do very little other than import the file - once the file is imported it is immediately passed to one of the relevant \texttt{check} functions inside the \texttt{read} function. There are several checks for each type of input file, with the number of checks increasing based on the complexity of the input file. Each check is printed to the R console on completion, whereas an error is returned at the first instance of a failed check, at which point the function is exited. The error will typically indicate which parts of the input data need to be changed to rectify the issue, often indicating a specific cell in the Excel file that requires attention. As such, the workflow is intended to be iterative, where a user imports a file, receives an error, manually changes the input file in Excel, then imports the data again until all checks pass (Figure \ref{fig:importflow}). Again, this design was purposeful as many monitoring agencies and groups collect data differently and a standard input format for the package was the best option to accommodate potential users. This may also encourage future standardization among groups for how data are maintained to ease formatting challenges to using \CRANpkg{MassWateR}. A user only needs to format their data once to use the package.
+The primary task of the \texttt{read} functions is to ensure all imported files follow the required format for the package. Excel files are the expected format for all inputs and the \texttt{read} functions use the \texttt{read\_excel} function from the \CRANpkg{readxl} package (Wickham and Bryan 2023). The \texttt{read} functions do very little other than import the file - once the file is imported it is immediately passed to one of the relevant \texttt{check} functions inside the \texttt{read} function. There are several checks for each type of input file, with the number of checks increasing based on the complexity of the input file. Each check is printed to the R console on completion, whereas an error is returned at the first instance of a failed check, at which point the function is exited. The error will typically indicate which parts of the input data need to be changed to rectify the issue, often indicating a specific cell in the Excel file that requires attention. As such, the workflow is intended to be iterative, where a user imports a file, receives an error, manually changes the input file in Excel, then imports the data again until all checks pass (Figure \ref{fig:importflow}). Again, this design was purposeful as many monitoring agencies and groups collect data differently and a standard input format for the package was the best option to accommodate potential users. This may also encourage future standardization among groups for how data are maintained to ease formatting challenges to using \CRANpkg{MassWateR}. A user only needs to format their data once to use the package.
 
 \begin{figure}
 \includegraphics[width=1\linewidth]{figs/importflow} \caption{Pseudocode demonstrating the iterative process of importing a required data file for \CRANpkg{MassWateR}.  All read functions import an Excel file and the imported file is then passed to a check function.  The function exits if an error is encountered, allowing the user to manually fix the identified error and then import again.  After all checks are passed, a formatting function is applied to correct minor issues (e.g., standardize date format as YYYY-MM-DD) and the final data object is returned.}\label{fig:importflow}
@@ -222,10 +222,51 @@ fsetls <- list(res = resdat, acc = accdat, frecom = frecomdat, sit = sitdat, wqx
 
 The object \texttt{fsetls} can then be used as input to downstream functions.
 
-A final note about the data inputs is that many types of water quality measurements can be included for analysis, although the package is currently limited to working with discrete samples as compared to data from continuous monitoring equipment. The \texttt{paramsMWR} dataset included with \CRANpkg{MassWateR} provides a complete list of the parameters that can be used with the package. On data import, this list is referenced to ensure that only relevant parameters are included and that appropriate units of measurement are provided. The list includes 43 different parameters, each with multiple valid units of measurement. Additionally, only one unit of measurement is allowed per parameter, which was an intentional design so that tedious functions for converting between dozens of units of measurement did not need to be created during package development. It is not an unreasonable expectation for users to provide only one unit of measurement per parameter as processing laboratories typically have a standard reporting format based on the same methodology used for estimating concentrations of water quality parameters.
+A final note about the data inputs is that many types of water quality measurements can be included for analysis, although the package is currently limited to working with discrete samples as compared to data from continuous monitoring equipment. The \texttt{paramsMWR} dataset included with \CRANpkg{MassWateR} provides a complete list of the parameters that can be used with the package. On data import, this list is referenced to ensure that only relevant parameters are included and that appropriate units of measurement are provided. The list includes 43 different parameters, each with multiple valid units of measurement. Additionally, only one unit of measurement is allowed per parameter, which was an intentional design so that tedious functions for converting between dozens of units of measurement did not need to be created during package development. It is not an unreasonable expectation for users to provide only one unit of measurement per parameter. Laboratories typically have a standard reporting format based on the same methodology or instrument used to measure concentrations of water quality parameters.
 
-\hypertarget{quality-control}{%
-\subsection{Quality Control}\label{quality-control}}
+An additional set of functions can be used to check for outliers in the results file. Outliers can be caused by several reasons, including data entry errors, laboratory processing errors, or anomalous environmental events. Identifying and potentially removing or correcting outliers is a critical part of quality control. The functions in \CRANpkg{MassWateR} simply identify potential outliers to provide an opportunity for users to address these values. The decision on how to address outliers remains with the user and no automated tools are provided in the package to correct outliers.
+
+The \texttt{anlzMWRoutlier()} function uses the results file and data quality objectives for accuracy to plot potential outliers by month. The accuracy file is used to automatically identify the y-axis scaling (as arithmetic or log) and to replace concentrations with appropriate values for those labelled as beyond detection. Outliers are defined using the standard definition of 1.5 times the interquartile range (the 25th to 75th percentile) of a parameter and can be visually identified as points above or below the whiskers in the boxplots. The station name for a point is also shown. The \texttt{param} specifies the water quality parameter to evaluate and the \texttt{group} argument specifies how the boxplots are grouped (by year, month, week, or station). In the following example, three stations are identified as potential outliers for the respective month.
+
+\begin{verbatim}
+anlzMWRoutlier(fset = fsetls, param = "DO", group = "month")
+\end{verbatim}
+
+\includegraphics[width=1\linewidth]{paper_files/figure-latex/unnamed-chunk-5-1}
+
+The outliers in the above plot can also be viewed as tabular output using \texttt{outliers\ =\ TRUE} to aid in their identification.
+
+\begin{verbatim}
+anlzMWRoutlier(fset = fsetls, param = "DO", group = "month", outliers = TRUE)
+\end{verbatim}
+
+\begin{verbatim}
+#> # A tibble: 3 x 6
+#>   `Monitoring Location ID` `Activity Start Date` `Activity Start Time`
+#>   <chr>                    <date>                <chr>                
+#> 1 ELZ-004                  2022-05-15            06:50                
+#> 2 HOP-011                  2022-05-15            06:55                
+#> 3 ELZ-004                  2022-09-11            07:20                
+#> # i 3 more variables: `Characteristic Name` <chr>, `Result Value` <dbl>,
+#> #   `Result Unit` <chr>
+\end{verbatim}
+
+A user can also evaluate outliers for every water quality parameter in the results file. The \texttt{anlzMWRoutlierall()} function creates a Word document with images of boxplots for every parameter created with \texttt{anlzMWRoutlier()}. Images for each parameter can also be created as standalone files. The \texttt{param} argument does not need to be specified because all parameters are identified in the results file and processed accordingly. The following shows how to use the function by creating a single Word file or individual image files in the working directory.
+
+\begin{verbatim}
+# create word output
+anlzMWRoutlierall(fset = fsetls, group = 'month', format = 'word', output_dir = getwd())
+
+# create png output
+anlzMWRoutlierall(fset = fsetls, group = 'month', format = 'png', output_dir = getwd())
+\end{verbatim}
+
+As in Figure \ref{fig:importflow}, a user can identify outliers from the results, modify the file in Excel, and import the file again for further QC reporting or analysis.
+
+\hypertarget{quality-control-reporting}{%
+\subsection{Quality Control reporting}\label{quality-control-reporting}}
+
+The quality control functions in \CRANpkg{MassWateR}
 
 \hypertarget{analysis}{%
 \subsection{Analysis}\label{analysis}}
@@ -290,6 +331,9 @@ Tango, Peter J, and Richard A Batiuk. 2013. {``Deriving {C}hesapeake {B}ay Water
 
 \leavevmode\vadjust pre{\hypertarget{ref-Wickham16}{}}%
 Wickham, Hadley. 2016. \emph{Ggplot2: Elegant Graphics for Data Analysis}. Springer-Verlag New York. \url{https://ggplot2.tidyverse.org}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Wickham23}{}}%
+Wickham, Hadley, and Jennifer Bryan. 2023. \emph{Readxl: Read Excel Files}. \url{https://CRAN.R-project.org/package=readxl}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-Wilde02}{}}%
 Wilde, Franceska D., and U.S. Geological Survey. 2002. {``Chapter A5. Processing of Water Samples.''} Techniques of Water-Resources Investigations 09-A5. Version 2.2, Revised February 2009. Reston, VA: U.S. Geological Survey. \url{https://doi.org/10.3133/twri09A5}.

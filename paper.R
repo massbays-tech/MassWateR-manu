@@ -63,3 +63,19 @@ wqxdat <- readMWRwqx(wqxpth)
 # a list of input data frames
 fsetls <- list(res = resdat, acc = accdat, frecom = frecomdat, sit = sitdat, wqx = wqxdat)
 
+
+## ---- fig.height = 3, fig.width = 6, echo = T, out.width = '100%'-------------
+anlzMWRoutlier(fset = fsetls, param = "DO", group = "month")
+
+
+## ---- echo = T----------------------------------------------------------------
+anlzMWRoutlier(fset = fsetls, param = "DO", group = "month", outliers = TRUE)
+
+
+## ---- echo = T, eval = F------------------------------------------------------
+#> # create word output
+#> anlzMWRoutlierall(fset = fsetls, group = 'month', format = 'word', output_dir = getwd())
+#> 
+#> # create png output
+#> anlzMWRoutlierall(fset = fsetls, group = 'month', format = 'png', output_dir = getwd())
+
