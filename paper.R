@@ -44,11 +44,11 @@ library(MassWateR)
 respth <- system.file("extdata/ExampleResults.xlsx", package = "MassWateR")
 resdat <- readMWRresults(respth)
 
-# import dqo accuracy data
+# import accuracy data
 accpth <- system.file("extdata/ExampleDQOAccuracy.xlsx", package = "MassWateR")
 accdat <- readMWRacc(accpth)
 
-# import dqo frequency and completeness data
+# import frequency and completeness data
 frecompth <- system.file("extdata/ExampleDQOFrequencyCompleteness.xlsx", package = "MassWateR")
 frecomdat <- readMWRfrecom(frecompth)
 
@@ -78,4 +78,20 @@ anlzMWRoutlier(fset = fsetls, param = "DO", group = "month", outliers = TRUE)
 #> 
 #> # create png output
 #> anlzMWRoutlierall(fset = fsetls, group = 'month', format = 'png', output_dir = getwd())
+
+
+## ---- echo = T, eval = F------------------------------------------------------
+#> qcMWRreview(fset = fsetls, output_dir = getwd())
+
+
+## ----qcex, fig.cap = "The first two pages of the quality control report that evaluates the results data relative to data quality objectives.  The first page shows the data quality objectives for accuracy, frequency, and completeness.  The second page shows QC results for frequency and completeness.  Parameters shown in red or marked as 'MISS' failed the data quality objectives.  Users can edit the Word file as needed, e.g., entering the organization name or adding additional notes.", fig.alt = "A Word document showing the first two pages of the quality control report.", out.width = '100%'----
+knitr::include_graphics('figs/qcex.png')
+
+
+## ---- echo = T----------------------------------------------------------------
+tabMWRacc(fset = fsetls, type = "summary")
+
+
+## ---- echo = T----------------------------------------------------------------
+tabMWRacc(fset = fsetls, type = "percent")
 

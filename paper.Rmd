@@ -140,11 +140,11 @@ library(MassWateR)
 respth <- system.file("extdata/ExampleResults.xlsx", package = "MassWateR")
 resdat <- readMWRresults(respth)
 
-# import dqo accuracy data
+# import accuracy data
 accpth <- system.file("extdata/ExampleDQOAccuracy.xlsx", package = "MassWateR")
 accdat <- readMWRacc(accpth)
 
-# import dqo frequency and completeness data
+# import frequency and completeness data
 frecompth <- system.file("extdata/ExampleDQOFrequencyCompleteness.xlsx", package = "MassWateR")
 frecomdat <- readMWRfrecom(frecompth)
 
@@ -192,7 +192,33 @@ As in Figure \@ref(fig:importflow), a user can identify outliers from the result
 
 ## Quality Control reporting
 
-The quality control functions in \CRANpkg{MassWateR}
+The quality control functions in \CRANpkg{MassWateR} are designed to create a single report that compares the water quality data in the results file (`resdat`) to data quality objectives in the accuracy (`accdat`) and frequency and completeness (`frecomdat`) files.  In general, the QC checks for accuracy evaluate if laboratory and field duplicates, blanks, or spikes are within acceptable ranges.  The QC checks for frequency and completeness evaluate if a sufficient number of records in the results file satisfy the accuracy checks and that sufficient QC data have been collected.  The values in the `accdat` and `frecomdat` inputs are collectively described as data quality objectives (DQOs), such that the QC samples in `resdat` must satisfy these objectives to be considered accurate and precise data for use in regulatory or other assessments by water quality professionals.  
+
+The `qcMWRreview()` function creates a single QC report as a Word document that evaluates all data in the results file using the DQOs in the `accdat` and `frecomdat` input files.  This file includes several tables created by individual \CRANpkg{MassWateR} functions, where each describe relevant evaluations for the QC assessment.  The file is created as follows, which typically requires less than a minute to complete and is followed by a message in the console indicating the report was successfully created and the path where the Word file is located.  A user can then further edit the Word document as needed.  The first two pages of the QC report are shown in Figure \@ref(fig:qcex).
+
+```{r, echo = T, eval = F}
+qcMWRreview(fset = fsetls, output_dir = getwd())
+```
+
+```{r qcex, fig.cap = "The first two pages of the quality control report that evaluates the results data relative to data quality objectives.  The first page shows the data quality objectives for accuracy, frequency, and completeness.  The second page shows QC results for frequency and completeness.  Parameters shown in red or marked as 'MISS' failed the data quality objectives.  Users can edit the Word file as needed, e.g., entering the organization name or adding additional notes.", fig.alt = "A Word document showing the first two pages of the quality control report.", out.width = '100%'}
+knitr::include_graphics('figs/qcex.png')
+```
+
+The QC report is built using several functions that can be used individually as needed.  In particular, the `tabMWRacc()`, `tabMWRfre()`, and `tabMWRcom()` create \CRANpkg{flextable} [@Gohel23] table objects that can be viewed in RStudio and are compatible with Microsoft Word output.  These functions are useful for understanding how the QC checks are created for the separate components of the QC report. For example, the `tabMWRacc()` function evaluates accuracy checks for field duplicates, lab duplicates, field blanks, lab blanks, and lab spikes/instrument checks for QC records in the results file based on DQOs in the accuracy file.  The function can return a summary of all checks as follows:
+
+```{r, echo = T}
+tabMWRacc(fset = fsetls, type = "summary")
+```
+
+The table shows the types and amounts of QC checks applied to each parameter and which of those checks did not satisfy the DQOs in the accuracy file.  For example, there were four field duplicate records for ammonia in the results file and only one of those records included a duplicate value outside of the acceptable range, i.e., there was a 75% acceptance rate for the four field duplicate records.  This same table can be viewed relative to the applicable frequency rate for the amount of passing checks considered to be appropriate for the QC records as identified in the frequency and completeness DQO file.
+
+```{r, echo = T}
+tabMWRacc(fset = fsetls, type = "percent")
+```
+
+The cellsin red showed that four of the checks for three of the parameters did not include a sufficient amount of QC records that passed the relevant accuracy checks.  All other parameters and checks in green had enough QC records to satisify the DQOs.  Empty cells include checks where no QC records were available in the results file, e.g., no lab duplicate for dissolved oxygen.  The empty cells are typically for QC checks that do not readily apply to a parameter.  For example, dissolved oxygen is measured in the field with monitoring equipment with no lab processing, such that lab QC checks are not relevant.  
+
+Detailed information about the QC checks for an individual parameter can be obtained...
 
 ## Analysis
 
