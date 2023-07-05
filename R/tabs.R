@@ -28,7 +28,13 @@ tab <- flextable(totab) %>%
   bold(part = 'header') %>%
   colformat_double(digits = 2) %>%
   valign(valign = 'top', part = 'header') %>%
-  align(j = 3:6, align = 'center', part = 'all')
+  align(j = 3:6, align = 'center', part = 'all') %>% 
+  set_caption(
+    as_paragraph(
+      as_chunk("File requirements for using MassWateR.  Check marks indicate which file is required for each part of the MassWateR workflow.", props = fp_text_default(font.family = "Arial"))
+              ), 
+    word_stylename = "Table Caption"
+    )
 
 filerequirements <- tab
 save(filerequirements, file = here('tabs/filerequirements.RData'))
