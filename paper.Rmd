@@ -84,7 +84,7 @@ filerequirements
 flextable_to_rmd(filerequirements)
 ```
 
-The following sections describe the basic approach to using functions in \CRANpkg{MassWateR} for any of the processes in the workflow.  The naming convention for the functions is meant to provide users with an intuitive format for understanding what each function does and the step of the workflow for which the function applies.  Although there are some exceptions to this nomenclature, the general format includes a prefix for each function as follows.  Each prefix also includes `MWR` to avoid namespace conflicts with other packages.  
+The following sections describe the basic approach to using functions in \CRANpkg{MassWateR} for any of the processes in the workflow.  The naming convention for the functions is meant to provide users with an intuitive format for understanding what each function does and the step of the workflow for which the function applies.  Although there are some exceptions to this nomenclature, the general format includes a prefix for each function as follows.  Each prefix also includes `MWR` to avoid namespace conflicts with other packages (e.g., `readMWR`).  
 
 * `read`: Read input files
 * `check`: Check input files for formatting issues, used internally to the read functions 
@@ -202,8 +202,9 @@ The `qcMWRreview()` function creates a single QC report as a Word document that 
 qcMWRreview(fset = fsetls, output_dir = getwd())
 ```
 
-```{r qcex, fig.cap = "The first two pages of the quality control report that evaluates the results data relative to data quality objectives.  The first page shows the data quality objectives for accuracy, frequency, and completeness.  The second page shows QC results for frequency and completeness.  Parameters shown in red or marked as 'MISS' failed the data quality objectives.  Users can edit the Word file as needed, e.g., entering the organization name or adding additional notes.", fig.alt = "A Word document showing the first two pages of the quality control report.", out.width = '100%'}
-knitr::include_graphics('figs/qcex.png')
+```{r qcex, fig.cap = "The first two pages of the quality control report that evaluates the results data relative to data quality objectives.  The first page shows the data quality objectives for accuracy, frequency, and completeness.  The second page shows QC results for frequency and completeness.  Parameters shown in red or marked as 'MISS' failed the data quality objectives.  Users can edit the Word file as needed, e.g., entering the organization name or adding notes.", fig.alt = "A Word document showing the first two pages of the quality control report.", out.width = '50%', fig.show='hold'}
+knitr::include_graphics('figs/qcreview1.png')
+knitr::include_graphics('figs/qcreview2.png')
 ```
 
 The QC report is built using several functions that can be used individually as needed.  In particular, the `tabMWRacc()`, `tabMWRfre()`, and `tabMWRcom()` create \CRANpkg{flextable} [@Gohel23] table objects that can be viewed in RStudio and are compatible with Microsoft Word output.  These functions are useful for understanding how the QC checks are created for the separate components of the QC report. For example, the `tabMWRacc()` function evaluates accuracy checks for field duplicates, lab duplicates, field blanks, lab blanks, and lab spikes/instrument checks for QC records in the results file based on DQOs in the accuracy file.  The function can return a summary of all checks as follows:
@@ -218,11 +219,22 @@ The table shows the types and amounts of QC checks applied to each parameter and
 tabMWRacc(fset = fsetls, type = "percent")
 ```
 
-The cellsin red showed that four of the checks for three of the parameters did not include a sufficient amount of QC records that passed the relevant accuracy checks.  All other parameters and checks in green had enough QC records to satisify the DQOs.  Empty cells include checks where no QC records were available in the results file, e.g., no lab duplicate for dissolved oxygen.  The empty cells are typically for QC checks that do not readily apply to a parameter.  For example, dissolved oxygen is measured in the field with monitoring equipment with no lab processing, such that lab QC checks are not relevant.  
+The cells in red showed that four of the checks for three of the parameters did not include a sufficient amount of QC records that passed the relevant accuracy checks.  All other parameters and checks in green had enough QC records to satisfy the DQOs.  Empty cells include checks where no QC records were available in the results file, e.g., no lab duplicate for dissolved oxygen.  The empty cells are typically for QC checks that do not readily apply to a parameter.  For example, dissolved oxygen is measured in the field with monitoring equipment with no lab processing, such that lab QC checks are not relevant.  
 
-Detailed information about the QC checks for an individual parameter can be obtained...
+Detailed information about the QC checks for an individual parameter can be obtained by changing the arguments to any of the `tab` functions.  For example, the results for every field blank check and every parameter can be obtained as follows by changing the `type` and `accchk` arguments.  This is the same information that is summarized using `type = "summary"` or `type = "percent"`.  
+
+```{r}
+tabMWRacc(res = resdat, acc = accdat, frecom = frecomdat, type = "individual", 
+          accchk = "Field Blanks", warn = FALSE)
+```
+
+The example shows that all but one field blank passed the checks, where most were below the detection limit (BDL) of the laboratory equipment.  Only one sample sample for total phosphorus (TP) was at or above the threshold on July 17th.
+
+Additional functions for creating QC tables include `tabMWRfre()` for assessing if a sufficient number of QC samples are available and `tabMWRcom()` for assessing completeness checks that compare the number of regular samples (field measurements or lab samples) to the number of qualified samples.  As with all the QC functions, these can be used individually within an R session to quickly view QC results or the `qcMWRreview()` function can be used to create a complete report that combines results from the individual functions.  The summarized report can then be submitted to an appropriate regulatory agency for review to ensure that any submitted datasets fulfill appropriate data quality objectives.  
 
 ## Analysis
+
+The analysis functions in \CRANpkg{MassWateR} provide a simple approach to quickly evaluate data in the results file.  Although several base R functions and supporting packages can be used to develop individual assessments, it was recognized that many users will not be comfortable developing their own custom routines.  As such, the analysis function were designed for a rapid overview of the results that required minimal decisions by the user to create the output.  
 
 ## Data submission
 

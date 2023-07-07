@@ -17,3 +17,90 @@ knitr::include_graphics('figs/workflow.png')
 ## ----filreqhtml, eval = knitr::is_html_output()-------------------------------
 #> filerequirements
 
+## ----filreqpdf, eval = knitr::is_latex_output(), results = 'asis'-------------
+flextable_to_rmd(filerequirements)
+
+
+## ----importflow, fig.cap = 'Pseudocode demonstrating the iterative process of importing a required data file for \\CRANpkg{MassWateR}.  All read functions import an Excel file and the imported file is then passed to a check function.  The function exits if an error is encountered, allowing the user to manually fix the identified error and then import again.  After all checks are passed, a formatting function is applied to correct minor issues (e.g., standardize date format as YYYY-MM-DD) and the final data object is returned.', fig.alt='Diagram showing pseudocode for importing a data file with MassWateR', out.width='100%'----
+knitr::include_graphics('figs/importflow.png')
+
+
+## ---- echo = T, message = T---------------------------------------------------
+library(MassWateR)
+
+# import results data
+respth <- system.file("extdata/ExampleResults.xlsx", package = "MassWateR")
+resdat <- readMWRresults(respth)
+
+
+## ---- error = T, echo = T, message = T----------------------------------------
+chk <- resdat
+chk[4, 2] <- "Sample"
+chk[135, 2] <- "Field"
+checkMWRresults(chk)
+
+
+## ---- results = 'hide', echo = T----------------------------------------------
+library(MassWateR)
+
+# import results data
+respth <- system.file("extdata/ExampleResults.xlsx", package = "MassWateR")
+resdat <- readMWRresults(respth)
+
+# import accuracy data
+accpth <- system.file("extdata/ExampleDQOAccuracy.xlsx", package = "MassWateR")
+accdat <- readMWRacc(accpth)
+
+# import frequency and completeness data
+frecompth <- system.file("extdata/ExampleDQOFrequencyCompleteness.xlsx", package = "MassWateR")
+frecomdat <- readMWRfrecom(frecompth)
+
+# import site data
+sitpth <- system.file("extdata/ExampleSites.xlsx", package = "MassWateR")
+sitdat <- readMWRsites(sitpth)
+
+# import WQX meta data
+wqxpth <- system.file("extdata/ExampleWQX.xlsx", package = "MassWateR")
+wqxdat <- readMWRwqx(wqxpth)
+
+# a list of input data frames
+fsetls <- list(res = resdat, acc = accdat, frecom = frecomdat, sit = sitdat, wqx = wqxdat)
+
+
+## ---- fig.height = 3, fig.width = 6, echo = T, out.width = '100%'-------------
+anlzMWRoutlier(fset = fsetls, param = "DO", group = "month")
+
+
+## ---- echo = T----------------------------------------------------------------
+anlzMWRoutlier(fset = fsetls, param = "DO", group = "month", outliers = TRUE)
+
+
+## ---- echo = T, eval = F------------------------------------------------------
+#> # create word output
+#> anlzMWRoutlierall(fset = fsetls, group = 'month', format = 'word', output_dir = getwd())
+#> 
+#> # create png output
+#> anlzMWRoutlierall(fset = fsetls, group = 'month', format = 'png', output_dir = getwd())
+
+
+## ---- echo = T, eval = F------------------------------------------------------
+#> qcMWRreview(fset = fsetls, output_dir = getwd())
+
+
+## ----qcex, fig.cap = "The first two pages of the quality control report that evaluates the results data relative to data quality objectives.  The first page shows the data quality objectives for accuracy, frequency, and completeness.  The second page shows QC results for frequency and completeness.  Parameters shown in red or marked as 'MISS' failed the data quality objectives.  Users can edit the Word file as needed, e.g., entering the organization name or adding notes.", fig.alt = "A Word document showing the first two pages of the quality control report.", out.width = '50%', fig.show='hold'----
+knitr::include_graphics('figs/qcreview1.png')
+knitr::include_graphics('figs/qcreview2.png')
+
+
+## ---- echo = T----------------------------------------------------------------
+tabMWRacc(fset = fsetls, type = "summary")
+
+
+## ---- echo = T----------------------------------------------------------------
+tabMWRacc(fset = fsetls, type = "percent")
+
+
+## -----------------------------------------------------------------------------
+tabMWRacc(res = resdat, acc = accdat, frecom = frecomdat, type = "individual", 
+          accchk = "Field Blanks", warn = FALSE)
+
