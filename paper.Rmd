@@ -41,7 +41,18 @@ output:
     self_contained: yes
     toc: no
 bibliography: RJreferences.bib
-
+preamble: |
+  \usepackage{multirow}
+  \usepackage{multicol}
+  \usepackage{colortbl}
+  \usepackage{hhline}
+  \newlength\Oldarrayrulewidth
+  \newlength\Oldtabcolsep
+  \usepackage{longtable}
+  \usepackage{array}
+  \usepackage{hyperref}
+  \usepackage{float}
+  \usepackage{wrapfig}\usepackage{longtable}
 ---
 
 ```{r setup, include=FALSE}
@@ -50,6 +61,7 @@ library(MassWateR)
 library(flextable)
 library(here)
 
+add_latex_dep()
 load(file = here('tabs/filerequirements.RData'))
 ```
 
@@ -75,13 +87,10 @@ knitr::include_graphics('figs/workflow.png')
 
 No matter the user need, all data inputs to \CRANpkg{MassWateR} must follow a strict format.  Developing a workflow to accommodate data inputs from the dozens of potential users from different organizations that use different data formats would have been impractical.  As such, the only limitation to using the package is to adhere to the formatting requirements for all input files.  Several [resources](https://massbays-tech.github.io/MassWateR/RESOURCES.html) are provided on the package web page to assist potential users in this effort.  These resources included several training activities that were conducted during package development and templates demonstrating the appropriate format and rationale.
 
-The required data files for using \CRANpkg{MassWateR} are shown in Table \@ref(tab:`r ifelse(knitr::is_html_output(), 'filreqhtml', 'filreqpdf')`), including the files that apply to the workflow steps in Figure \@ref(fig:workflow).  The files are each imported into R using specific `read` functions with relevant checks, explained in the next section.  These checks verify multiple requirements outlined in the template files, with informative errors or warnings returned to the console to prompt the user on the required action to remedy a formatting issue.  The largest input file required for all parts of the workflow in Figure \@ref(fig:workflow) is the results file.  This file includes all water quality monitoring data to be used with the package. As such, the formatting requirements are the most burdensome for potential users and additional functions are available to assist with formatting.
+The required data files for using \CRANpkg{MassWateR} are shown in Table \@ref(tab:filereq), including the files that apply to the workflow steps in Figure \@ref(fig:workflow).  The files are each imported into R using specific `read` functions with relevant checks, explained in the next section.  These checks verify multiple requirements outlined in the template files, with informative errors or warnings returned to the console to prompt the user on the required action to remedy a formatting issue.  The largest input file required for all parts of the workflow in Figure \@ref(fig:workflow) is the results file.  This file includes all water quality monitoring data to be used with the package. As such, the formatting requirements are the most burdensome for potential users and additional functions are available to assist with formatting.
 
-```{r filreqhtml, eval = knitr::is_html_output()}
+```{r filreq}
 filerequirements
-```
-```{r filreqpdf, eval = knitr::is_latex_output(), results = 'asis'}
-flextable_to_rmd(filerequirements)
 ```
 
 The following sections describe the basic approach to using functions in \CRANpkg{MassWateR} for any of the processes in the workflow.  The naming convention for the functions is meant to provide users with an intuitive format for understanding what each function does and the step of the workflow for which the function applies.  Although there are some exceptions to this nomenclature, the general format includes a prefix for each function as follows.  Each prefix also includes `MWR` to avoid namespace conflicts with other packages (e.g., `readMWR`).  

@@ -7,6 +7,7 @@ library(MassWateR)
 library(flextable)
 library(here)
 
+add_latex_dep()
 load(file = here('tabs/filerequirements.RData'))
 
 
