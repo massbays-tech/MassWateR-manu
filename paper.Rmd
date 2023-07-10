@@ -59,9 +59,11 @@ preamble: |
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 library(MassWateR)
 library(flextable)
+library(dplyr)
 library(here)
 
-add_latex_dep()
+flextable::set_flextable_defaults(font.size = 7, padding = 0)
+
 load(file = here('tabs/filerequirements.RData'))
 ```
 
@@ -73,7 +75,7 @@ Monitoring data of sufficient quantity and quality are critical to ensure precis
 
 The R statistical programming language offers a valuable software platform for developing tools to improve the QC of water quality data.  The use of R with document generation systems offered through packages like \CRANpkg{knitr} [@Xie15] and \CRANpkg{rmarkdown} [@Allaire23] can be leveraged to generate QC reports that follow a standard format for review by regulatory agencies.  These tools can also be used to format water quality data for submission to state or national water quality databases, such as the Water Quality Exchange (WQX) database maintained by the US Environmental Protection Agency (USEPA).  This database is the largest source of monitoring data in the United States that includes information on hydrologic conditions and chemical, physical, and biological measurements from surface waters.  Further, many environmental resource managers have the need to analyze status and trends in monitoring data and R packages such as \CRANpkg{ggplot2} [@Wickham16] offer useful approaches to visualize numerous water quality records in a single graph. Integrating this functionality into a single package is expected to have wide ranging utility for anyone collecting surface water data and is likely to improve the quality and insights obtained from these data.  
 
-This paper describes the \CRANpkg{MassWateR} package developed to improve how environmental professionals perform quality control, analysis, and sharing of monitoring data for surface waters.  The regional focus of the package is for monitoring data collected in Massachusetts, USA, with QC reports submitted to the Massachusetts Department of Environmental Protection and data submitted to the national WQX database.  Although the initial conception of \CRANpkg{MassWateR} was to address regional needs in Massachusetts, there is nothing specific in the package that prevents its use outside of the state as the QC checks and analyses follow routine methods for data collected elsewhere.  As such, this paper is written with emphasis on how the tools are broadly applicable to anyone interested in improving efficiency and reproducibility of QC checks, in addition to analysis of water quality data and submission to WQX as the largest source of water quality monitoring data in the US.  
+This paper describes the \CRANpkg{MassWateR} package developed to improve how environmental professionals perform quality control, analysis, and sharing of monitoring data for surface waters.  The regional focus of the package is for monitoring data collected in Massachusetts, USA, with QC reports submitted to the Massachusetts Department of Environmental Protection (MADEP) and data submitted to the national WQX database.  Although the initial conception of \CRANpkg{MassWateR} was to address regional needs in Massachusetts, there is nothing specific in the package that prevents its use outside of the state as the QC checks and analyses follow routine methods for data collected elsewhere.  As such, this paper is written with emphasis on how the tools are broadly applicable to anyone interested in improving efficiency and reproducibility of QC checks, in addition to analysis of water quality data and submission to WQX as the largest source of water quality monitoring data in the US.  
 
 # Requirements for using \CRANpkg{MassWateR}
 
@@ -87,10 +89,10 @@ knitr::include_graphics('figs/workflow.png')
 
 No matter the user need, all data inputs to \CRANpkg{MassWateR} must follow a strict format.  Developing a workflow to accommodate data inputs from the dozens of potential users from different organizations that use different data formats would have been impractical.  As such, the only limitation to using the package is to adhere to the formatting requirements for all input files.  Several [resources](https://massbays-tech.github.io/MassWateR/RESOURCES.html) are provided on the package web page to assist potential users in this effort.  These resources included several training activities that were conducted during package development and templates demonstrating the appropriate format and rationale.
 
-The required data files for using \CRANpkg{MassWateR} are shown in Table \@ref(tab:filereq), including the files that apply to the workflow steps in Figure \@ref(fig:workflow).  The files are each imported into R using specific `read` functions with relevant checks, explained in the next section.  These checks verify multiple requirements outlined in the template files, with informative errors or warnings returned to the console to prompt the user on the required action to remedy a formatting issue.  The largest input file required for all parts of the workflow in Figure \@ref(fig:workflow) is the results file.  This file includes all water quality monitoring data to be used with the package. As such, the formatting requirements are the most burdensome for potential users and additional functions are available to assist with formatting.
+The required data files for using \CRANpkg{MassWateR} are shown in Table \@ref(tab:filreq), including the files that apply to the workflow steps in Figure \@ref(fig:workflow).  The files are each imported into R using specific `read` functions with relevant checks, explained in the next section.  These checks verify multiple requirements outlined in the template files, with informative errors or warnings returned to the console to prompt the user on the required action to remedy a formatting issue.  The largest input file required for all parts of the workflow in Figure \@ref(fig:workflow) is the results file.  This file includes all water quality monitoring data to be used with the package. As such, the formatting requirements are the most burdensome for potential users and additional functions are available to assist with formatting.
 
 ```{r filreq}
-filerequirements
+filerequirements %>% fontsize(part = 'all', size = 9)
 ```
 
 The following sections describe the basic approach to using functions in \CRANpkg{MassWateR} for any of the processes in the workflow.  The naming convention for the functions is meant to provide users with an intuitive format for understanding what each function does and the step of the workflow for which the function applies.  Although there are some exceptions to this nomenclature, the general format includes a prefix for each function as follows.  Each prefix also includes `MWR` to avoid namespace conflicts with other packages (e.g., `readMWR`).  
@@ -186,17 +188,20 @@ anlzMWRoutlier(fset = fsetls, param = "DO", group = "month")
 The outliers in the above plot can also be viewed as tabular output using `outliers = TRUE` to aid in their identification. 
 
 ```{r, echo = T}
-anlzMWRoutlier(fset = fsetls, param = "DO", group = "month", outliers = TRUE)
+anlzMWRoutlier(fset = fsetls, param = "DO", group = "month", 
+  outliers = TRUE)
 ```
 
 A user can also evaluate outliers for every water quality parameter in the results file.  The `anlzMWRoutlierall()` function creates a Word document with images of boxplots for every parameter created with `anlzMWRoutlier()`.  Images for each parameter can also be created as standalone files.  The `param` argument does not need to be specified because all parameters are identified in the results file and processed accordingly.  The following shows how to use the function by creating a single Word file or individual image files in the working directory.
 
 ```{r, echo = T, eval = F}
 # create word output
-anlzMWRoutlierall(fset = fsetls, group = 'month', format = 'word', output_dir = getwd())
+anlzMWRoutlierall(fset = fsetls, group = 'month', format = 'word', 
+  output_dir = getwd())
 
 # create png output
-anlzMWRoutlierall(fset = fsetls, group = 'month', format = 'png', output_dir = getwd())
+anlzMWRoutlierall(fset = fsetls, group = 'month', format = 'png', 
+  output_dir = getwd())
 ```
 
 As in Figure \@ref(fig:importflow), a user can identify outliers from the results, modify the file in Excel, and import the file again for further QC reporting or analysis. 
@@ -234,7 +239,7 @@ Detailed information about the QC checks for an individual parameter can be obta
 
 ```{r}
 tabMWRacc(res = resdat, acc = accdat, frecom = frecomdat, type = "individual", 
-          accchk = "Field Blanks", warn = FALSE)
+  accchk = "Field Blanks", warn = FALSE)
 ```
 
 The example shows that all but one field blank passed the checks, where most were below the detection limit (BDL) of the laboratory equipment.  Only one sample sample for total phosphorus (TP) was at or above the threshold on July 17th.
@@ -243,9 +248,45 @@ Additional functions for creating QC tables include `tabMWRfre()` for assessing 
 
 ## Analysis
 
-The analysis functions in \CRANpkg{MassWateR} provide a simple approach to quickly evaluate data in the results file.  Although several base R functions and supporting packages can be used to develop individual assessments, it was recognized that many users will not be comfortable developing their own custom routines.  As such, the analysis function were designed for a rapid overview of the results that required minimal decisions by the user to create the output.  
+The analysis functions in \CRANpkg{MassWateR} provide a simple approach to quickly evaluate data in the results file.  Although several base R functions and supporting packages can be used to develop individual assessments, it was recognized that many users will not be comfortable developing their own custom visualization routines.  As such, the analysis functions were designed for a rapid overview of the results that required minimal decisions by the user to create the output.  Several default settings described below allow further customization of the output as desired by the user. The four primary analysis functions can be used to analyze seasonal trends, trends by date, date by site, and spatially using maps.  
+
+Seasonal trends can be evaluated using the `anlzMWRseason()` function that summarizes results for a single parameter using boxplots or barplots with seasonal groups assigned to months or weeks of the year. Boxplots or barplots can also include jittered points of the observations on top or only the jittered points can be shown.  Below demonstrates a jittered boxplot of dissolved oxygen observations by month.  
+
+```{r fig.height = 3, fig.width = 6, echo = T, out.width = '100%'}
+anlzMWRseason(fset = fsetls, param = "DO", thresh = "fresh", 
+  group = "month", type = "jitterbox")
+```
+
+The arguments specify different options available for the plot, including which parameter to plot in the results file (`param`), the type of threshold lines to show (`thresh`), the grouping, and the type of plot (jittered points over boxplots).  The `thresh` argument in particular is used to plot relevant thresholds of interest based on the parameter and if the samples are from freshwater or marine sites.  The `thresholdMWR` data object included with the package includes thresholds for ten common parameters that are either regulatory standards or recommended safe limits for different designated uses in freshwater or marine environments.  Each threshold includes a source that is displayed in the legend above the plot.  In the above example, the threshold line applies to class A or B freshwater environments that support warmwater fisheries, as defined by MADEP. Threshold lines can be suppressed (`thresh = "none"`) or user-specific thresholds can de added using additional \CRANpkg{ggplot2} functionality (i.e., with `geom_hline()`).  
+
+The y-axis scaling of the plot is also determined automatically from the data inputs.  The DQO file for accuracy includes information on the distribution of each parameter, i.e., parameters with "log" in any of the columns are plotted on log10-scale, otherwise arithmetic.  This behavior is controlled by the `yscl` argument, where the default is `"auto"` that indicates information on scaling is obtained automatically from the DQO file.  Setting `yscl = "linear"` or `yscl = "log"` will set the axis as linear or log10-scale, respectively, regardless of the information in the DQO file.
+
+The `anlzMWRdate()` function plots results continuous in time on the date the samples or measurements were collected.  This information can be use evaluate how samples have changed at individual sites over time or as aggregate samples across sites.  In the former case, individual points and lines are used for each site with appropriate labels. For the latter case, sites are aggregated and appropriate summary statistics are shown as the mean with 95% confidence intervals.  Sites can be aggregated by sample dates or by "location groups" in the site metadata file.  For example, all sites along the same river or tributary can be aggregated.  The following demonstrates an aggregation of sites by the mainstem of the Assabet river and its tributaries using the `group = "locgroup"` argument.  A user can specify any desired grouping in the `Location Group` column of the site metadata file. 
+
+```{r fig.height = 3, fig.width = 6, echo = T, out.width = '100%'}
+anlzMWRdate(fset = fsetls, param = 'DO', group = 'locgroup', 
+  thresh = 'fresh')
+```
+
+The `anlzMWRsite()` function can be used to view distributions of a parameter across sites. This function summarizes results for a single parameter using boxplots or barplots separately for each site on the x-axis. Boxplots or barplots can also include jittered points of the observations on top or only the jittered points can be shown. Results at each site can also be grouped by the `Result Attribute` column in the results file, where a user can enter arbitrary grouping criteria for samples.  For example, sites can be grouped by wet or dry conditions if this information is included in the results file.  Individual sites can also be specified with the `site` argument.
+
+```{r fig.height = 3, fig.width = 6, echo = T, out.width = '100%'}
+anlzMWRsite(fset = fsetls, param = "DO", thresh = "fresh", type = "box", 
+  site = c("ABT-026", "ABT-062", "ABT-077", "ABT-144", "ABT-237", "ABT-301"),
+  resultatt = c('DRY', 'WET'), byresultatt = TRUE)
+```
+
+Finally, maps of results at each site can be created with the `anlzMWRmap()` function.  Parameter values at each site are summarized with colors indicating relative values and the maps can include various spatial information as reference. For example, hydrologic lines and waterbodies from the National Hydrograpy Dataset (NHD) can be shown with varying level of detail and base maps can be included from the \CRANpkg{ggmap} package [@Kahle13].  NHD data were included to provide more specific information on hydrologic features of interest because of insufficient detail in basemaps.  These datasets are available from an external source and clipped to an approximate bounding box for the selected stations.  Currently, only flowlines and waterbodies for Massachusetts are included, although examples are provided in a package [vignette](https://massbays-tech.github.io/MassWateR/articles/modifying.html#modifying-masswater-plots) for including custom shapefiles.  The below example shows mean dissolved oxygen concentrations using the medium level of detail for the NHD maps (`addwater = "medium"`).
+
+```{r fig.height = 6, fig.width = 6, echo = T, out.width = '100%'}
+anlzMWRmap(fset = fsetls, param = "DO", addwater = "medium")
+```
+
+Samples and measurements across dates can be aggregated differently using the `sumfun` argument. If `sumfun = "auto"` (default), the mean is used where the distribution is determined automatically from the DQO file for accuracy, i.e., parameters with `"log"` in any of the columns are summarized with the geometric mean, otherwise arithmetic. Any other valid R summary function will be applied if passed to `sumfun` (`"mean"`, `"geomean"`, `"median"`, `"min"`, `"max"`).  This argument also applies to other analysis functions where the data can be aggregated across dates or locations.  
 
 ## Data submission
+
+The last 
 
 # Building a community and future work
 

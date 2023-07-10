@@ -5,9 +5,11 @@
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 library(MassWateR)
 library(flextable)
+library(dplyr)
 library(here)
 
-add_latex_dep()
+flextable::set_flextable_defaults(font.size = 7, padding = 0)
+
 load(file = here('tabs/filerequirements.RData'))
 
 
@@ -15,11 +17,8 @@ load(file = here('tabs/filerequirements.RData'))
 knitr::include_graphics('figs/workflow.png')
 
 
-## ----filreqhtml, eval = knitr::is_html_output()-------------------------------
-#> filerequirements
-
-## ----filreqpdf, eval = knitr::is_latex_output(), results = 'asis'-------------
-flextable_to_rmd(filerequirements)
+## ----filreq-------------------------------------------------------------------
+filerequirements %>% fontsize(part = 'all', size = 9)
 
 
 ## ----importflow, fig.cap = 'Pseudocode demonstrating the iterative process of importing a required data file for \\CRANpkg{MassWateR}.  All read functions import an Excel file and the imported file is then passed to a check function.  The function exits if an error is encountered, allowing the user to manually fix the identified error and then import again.  After all checks are passed, a formatting function is applied to correct minor issues (e.g., standardize date format as YYYY-MM-DD) and the final data object is returned.', fig.alt='Diagram showing pseudocode for importing a data file with MassWateR', out.width='100%'----
@@ -73,15 +72,18 @@ anlzMWRoutlier(fset = fsetls, param = "DO", group = "month")
 
 
 ## ---- echo = T----------------------------------------------------------------
-anlzMWRoutlier(fset = fsetls, param = "DO", group = "month", outliers = TRUE)
+anlzMWRoutlier(fset = fsetls, param = "DO", group = "month", 
+  outliers = TRUE)
 
 
 ## ---- echo = T, eval = F------------------------------------------------------
 #> # create word output
-#> anlzMWRoutlierall(fset = fsetls, group = 'month', format = 'word', output_dir = getwd())
+#> anlzMWRoutlierall(fset = fsetls, group = 'month', format = 'word',
+#>   output_dir = getwd())
 #> 
 #> # create png output
-#> anlzMWRoutlierall(fset = fsetls, group = 'month', format = 'png', output_dir = getwd())
+#> anlzMWRoutlierall(fset = fsetls, group = 'month', format = 'png',
+#>   output_dir = getwd())
 
 
 ## ---- echo = T, eval = F------------------------------------------------------
@@ -103,5 +105,25 @@ tabMWRacc(fset = fsetls, type = "percent")
 
 ## -----------------------------------------------------------------------------
 tabMWRacc(res = resdat, acc = accdat, frecom = frecomdat, type = "individual", 
-          accchk = "Field Blanks", warn = FALSE)
+  accchk = "Field Blanks", warn = FALSE)
+
+
+## ----fig.height = 3, fig.width = 6, echo = T, out.width = '100%'--------------
+anlzMWRseason(fset = fsetls, param = "DO", thresh = "fresh", 
+  group = "month", type = "jitterbox")
+
+
+## ----fig.height = 3, fig.width = 6, echo = T, out.width = '100%'--------------
+anlzMWRdate(fset = fsetls, param = 'DO', group = 'locgroup', 
+  thresh = 'fresh')
+
+
+## ----fig.height = 3, fig.width = 6, echo = T, out.width = '100%'--------------
+anlzMWRsite(fset = fsetls, param = "DO", thresh = "fresh", type = "box", 
+  site = c("ABT-026", "ABT-062", "ABT-077", "ABT-144", "ABT-237", "ABT-301"),
+  resultatt = c('DRY', 'WET'), byresultatt = TRUE)
+
+
+## ----fig.height = 6, fig.width = 6, echo = T, out.width = '100%'--------------
+anlzMWRmap(fset = fsetls, param = "DO", addwater = "medium")
 

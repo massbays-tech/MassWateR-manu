@@ -23,8 +23,8 @@ tab <- flextable(totab) %>%
   colformat_image(j = 4, i = colind[[2]], width = imgsz, height = imgsz) %>% 
   colformat_image(j = 5, i = colind[[3]], width = imgsz, height = imgsz) %>% 
   colformat_image(j = 6, i = colind[[4]], width = imgsz, height = imgsz) %>% 
-  width(j = 2, width = 3) %>%
-  width(j = c(1, 3:6), width = 3.5 / 5) %>% 
+  width(j = 2, width = 2.5) %>%
+  width(j = c(1, 3:6), width = 3 / 5) %>%
   bold(part = 'header') %>%
   colformat_double(digits = 2) %>%
   valign(valign = 'top', part = 'header') %>%
