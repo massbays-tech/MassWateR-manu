@@ -127,3 +127,8 @@ anlzMWRsite(fset = fsetls, param = "DO", thresh = "fresh", type = "box",
 ## ----fig.height = 6, fig.width = 6, echo = T, out.width = '100%'--------------
 anlzMWRmap(fset = fsetls, param = "DO", addwater = "medium")
 
+
+## ---- echo = T, eval = F------------------------------------------------------
+#> tabMWRwqx(fset = fsetls, output_dir = getwd())
+#> #> Excel workbook created successfully! File located at /tmp/RtmpBrk9nw/wqxtab.xlsx
+

@@ -1023,6 +1023,17 @@ Samples and measurements across dates can be aggregated differently using the \t
 \hypertarget{data-submission}{%
 \subsection{Data submission}\label{data-submission}}
 
+The last part of the \CRANpkg{MassWateR} workflow is preparation of data for submission to WQX. A single function, \texttt{tabMWRwqx()}, is provided to format data inputs using a template designed for data submission. This function will export a single Excel workbook with three sheets, named ``Project'', ``Locations'', and ``Results'', all of which are required for data submission. The output is populated with as much content as possible based on information in the input files. The remainder of the information not included in the output will need to be manually entered before uploading the data to WQX. All required columns are present, but individual rows will need to be verified for completeness. It is the responsibility of the user to verify this information is complete and correct before uploading the data.
+
+The workbook can be created as follows by including the required files and specifying an output directory where the Excel file is saved. Once the function is done running, a message indicating success and where the file is located is returned.
+
+\begin{verbatim}
+tabMWRwqx(fset = fsetls, output_dir = getwd())
+#> Excel workbook created successfully! File located at /tmp/RtmpBrk9nw/wqxtab.xlsx
+\end{verbatim}
+
+Additional templates and instructions for data submission are available on the \href{https://massbays-tech.github.io/MassWateR/index.html}{package website}. It is assumed that users are familiar with the WQX data submission portal if they are already using the package. \CRANpkg{MassWateR} eliminates the need to format the data by hand and it is expected to increase the amount of data made available on the WQP (via WQX) as the user base for the package increases.
+
 \hypertarget{building-a-community-and-future-work}{%
 \section{Building a community and future work}\label{building-a-community-and-future-work}}
 
