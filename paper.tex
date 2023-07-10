@@ -1023,7 +1023,7 @@ Samples and measurements across dates can be aggregated differently using the \t
 \hypertarget{data-submission}{%
 \subsection{Data submission}\label{data-submission}}
 
-The last part of the \CRANpkg{MassWateR} workflow is preparation of data for submission to WQX. A single function, \texttt{tabMWRwqx()}, is provided to format data inputs using a template designed for data submission. This function will export a single Excel workbook with three sheets, named ``Project'', ``Locations'', and ``Results'', all of which are required for data submission. The output is populated with as much content as possible based on information in the input files. The remainder of the information not included in the output will need to be manually entered before uploading the data to WQX. All required columns are present, but individual rows will need to be verified for completeness. It is the responsibility of the user to verify this information is complete and correct before uploading the data.
+The last part of the \CRANpkg{MassWateR} workflow is preparation of data for submission to WQX. A single function, \texttt{tabMWRwqx()}, is provided to format data inputs using a \href{https://massbays-tech.github.io/MassWateR/RESOURCES.html}{template} designed for data submission. This function will export a single Excel workbook with three sheets, named ``Project'', ``Locations'', and ``Results'', all of which are required for data submission. The output is populated with as much content as possible based on information in the input files. The remainder of the information not included in the output will need to be manually entered before uploading the data to WQX. All required columns are present, but individual rows must be verified for completeness and accuracy by the user before uploading the data.
 
 The workbook can be created as follows by including the required files and specifying an output directory where the Excel file is saved. Once the function is done running, a message indicating success and where the file is located is returned.
 
@@ -1032,20 +1032,16 @@ tabMWRwqx(fset = fsetls, output_dir = getwd())
 #> Excel workbook created successfully! File located at /tmp/RtmpBrk9nw/wqxtab.xlsx
 \end{verbatim}
 
-Additional templates and instructions for data submission are available on the \href{https://massbays-tech.github.io/MassWateR/index.html}{package website}. It is assumed that users are familiar with the WQX data submission portal if they are already using the package. \CRANpkg{MassWateR} eliminates the need to format the data by hand and it is expected to increase the amount of data made available on the WQP (via WQX) as the user base for the package increases.
+Additional templates and instructions for data submission are available on the \href{https://massbays-tech.github.io/MassWateR/index.html}{package website}. It is assumed that users are familiar with the WQX data submission portal if they are already using the package. \CRANpkg{MassWateR} eliminates the need to format the data by hand and it is expected to increase the amount of data made available on the WQP (via WQX upload) as the user base for the package increases.
 
 \hypertarget{building-a-community-and-future-work}{%
 \section{Building a community and future work}\label{building-a-community-and-future-work}}
 
-All developers hope that their package is used by the intended audience. To ensure this for \CRANpkg{MassWateR}, a community of practice was\ldots{}
+To ensure that \CRANpkg{MassWateR} is a known resource for potential users and to encourage its use for QC reporting, analysis, and data submission, a community of practice was established during package development and following its initial release on CRAN. This included several beta testing and training workshops to gather feedback on anticipated data analysis workflows and to educate potential users on appropriate use of the package. Many users have not previously been exposed to R for data analysis and a substantial portion of the trainings included an \href{https://massbays-tech.github.io/intro-to-r/}{introduction} to the software, as well as use of \CRANpkg{MassWateR}. Emphasis was placed on simple use of the core functions, as opposed to developing custom workflows that combined core R functions with \CRANpkg{MassWateR}. However, users were encouraged to learn how to extend the use of the package by leveraging additional R packages, such as \CRANpkg{ggplot2} to create additional visualizations for modifying the existing analysis plots in \CRANpkg{MassWateR}. For example, a \href{https://massbays-tech.github.io/MassWateR/articles/modifying.html}{vignette} was included on the package website to demonstrate how these plots can be modified for custom output using \CRANpkg{ggplot2}. Further, a \href{https://massbays.discourse.group/c/masswater-r-tools/5}{community forum} was created as a resource for users to post questions about using the package and for others to view the discussion if similar issues were encountered. This approach followed the model used by other popular web forums (e.g., StackOverflow) for troubleshooting software issues by minimizing duplicative issues through sharing solutions in a public forum.
 
-Building the community of practice\ldots{}
+As noted above, \CRANpkg{MassWateR} was developed to meet specific needs of water quality professionals in Massachusetts, but the principles for QC reporting, analysis, and WQX data submission are largely universal and the package can be used outside of the state as long as the following minor limitations are addressed. First, some of the parameter thresholds applied to the analysis plots are unique to Massachusetts, whereas others apply more broadly, such as those defined using standards from the USEPA. Users can simply omit the thresholds if they do not apply using \texttt{thresh\ =\ "none"} or add custom thresholds using standard \CRANpkg{ggplot2} functions. Second, the NHD waterbodies used by \texttt{anlzMWRmap()} are specific to watersheds in Massachusetts. Users can omit these layers from the plot using \texttt{addwater\ =\ NULL}, add a base map using the \texttt{maptype} argument, or add custom waterbody layers as simple features objects (Pebesma and Bivand 2023) using the \texttt{geom\_sf()} function from \CRANpkg{ggplot2}. Third, the QC report created by \texttt{qcMWRreview()} uses a format vetted by MADEP. This format may not meet the requirements of other state organization, although the reporting principles are generally universal and the resulting Word document can easily be manually modified. Finally, minor components of the Excel file for WQX submission created by \texttt{tabMWRwqx()} are specific to Massachusetts. This includes the timezone for the \texttt{WQX\ Activity\ Start\ Time\ Zone} field and some default entries for sample collection methods that include \texttt{"MassWateR"} in the text. Each of these can also be modified by hand in the output file. Future enhancements and additions to \CRANpkg{MassWateR} will likely include automated tools to address these minor issues using the package outside of Massachusetts.
 
-MassWater in other locations, expansion elsewhere
-
-Inclusion of historical data
-
-Inclusion for continuous monitoring data, consider outlier anlaysis, drift, biofouling, etc.
+Additional future work to improve the functionality of \CRANpkg{MassWateR} is also expected as the user base increases and the functions mature with additional bug fixes or minor enhancements. Specifically, the inclusion of historical data for some of the analysis functions could provide additional context on status and trends for monitoring data at specific locations. This enhancement would require the extraction of existing data already included in the WQP, which would not be significantly challenging given the robust web retrieval tools already available. Existing R packages already leverage these tools (e.g., \CRANpkg{dataRetrieval}) and a similar approach could be usedby \CRANpkg{MassWateR}. A second and more challenging enhancement would be the ability to work with continuous monitoring data collected at high temporal resolution with equipment deployed \emph{in situ}. These data present additional challenges not encountered with routine samples collected at longer time intervals, including increased data volume and additional QC needs (Wagner et al. 2006; Horsburgh et al. 2015). For the latter, automated tools are needed for detecting and handling QC issues common with monitoring equipment deployed in the field for long duration, such as instrument drift, biofouling, or missing data. More complex methods for detecting outliers in continuous monitoring data beyond the existing tools in \CRANpkg{MassWateR} will also be needed (Leigh et al. 2019).
 
 \hypertarget{summary}{%
 \section{Summary}\label{summary}}
@@ -1077,6 +1073,9 @@ De Cicco, Laura A., David Lorenz, Robert M. Hirsch, William Watkins, and Mike Jo
 \leavevmode\vadjust pre{\hypertarget{ref-Gohel23}{}}%
 Gohel, David, and Panagiotis Skintzos. 2023. \emph{Flextable: Functions for Tabular Reporting}. \url{https://CRAN.R-project.org/package=flextable}.
 
+\leavevmode\vadjust pre{\hypertarget{ref-Horsburgh15}{}}%
+Horsburgh, Jeffery S, Stephanie L Reeder, Amber Spackman Jones, and Jacob Meline. 2015. {``Open Source Software for Visualization and Quality Control of Continuous Hydrologic and Water Quality Sensor Data.''} \emph{Environmental Modelling \& Software} 70: 32--44. \url{https://doi.org/10.1016/j.envsoft.2015.04.002}.
+
 \leavevmode\vadjust pre{\hypertarget{ref-Kahle13}{}}%
 Kahle, David, and Hadley Wickham. 2013. {``Ggmap: Spatial Visualization with Ggplot2.''} \emph{The R Journal} 5 (1): 144--61. \url{https://journal.r-project.org/archive/2013-1/kahle-wickham.pdf}.
 
@@ -1086,6 +1085,12 @@ Kelly-Quinn, M, JN Biggs, S Brooks, P Fortuño, S Hegarty, JI Jones, and F Regan
 \leavevmode\vadjust pre{\hypertarget{ref-Kumpel20}{}}%
 Kumpel, Emily, Clara MacLeod, Kara Stuart, Alicea Cock-Esteb, Ranjiv Khush, and Rachel Peletz. 2020. {``From Data to Decisions: Understanding Information Flows Within Regulatory Water Quality Monitoring Programs.''} \emph{Npj Clean Water} 3 (1): 38. \url{https://doi.org/10.1038/s41545-020-00084-0}.
 
+\leavevmode\vadjust pre{\hypertarget{ref-Leigh19}{}}%
+Leigh, Catherine, Omar Alsibai, Rob J Hyndman, Sevvandi Kandanaarachchi, Olivia C King, James M McGree, Catherine Neelamraju, et al. 2019. {``A Framework for Automated Anomaly Detection in High Frequency Water-Quality Data from in Situ Sensors.''} \emph{Science of the Total Environment} 664: 885--98. \url{https://doi.org/10.1016/j.scitotenv.2019.02.085}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Pebesma23}{}}%
+Pebesma, Edzer, and Roger Bivand. 2023. \emph{{Spatial Data Science: With applications in R}}. {Chapman and Hall/CRC}. \url{https://r-spatial.org/book/}.
+
 \leavevmode\vadjust pre{\hypertarget{ref-Schiff16}{}}%
 Schiff, Ken, PR Trowbridge, ET Sherwood, Peter Tango, and Rich A Batiuk. 2016. {``Regional Monitoring Programs in the United States: Synthesis of Four Case Studies from Pacific, Atlantic, and Gulf Coasts.''} \emph{Regional Studies in Marine Science} 4: A1--7. \url{https://doi.org/10.1016/j.rsma.2015.11.007}.
 
@@ -1094,6 +1099,9 @@ Stein, Eric D, and Donald B Cadien. 2009. {``Ecosystem Response to Regulatory an
 
 \leavevmode\vadjust pre{\hypertarget{ref-Tango13}{}}%
 Tango, Peter J, and Richard A Batiuk. 2013. {``Deriving {C}hesapeake {B}ay Water Quality Standards.''} \emph{JAWRA Journal of the American Water Resources Association} 49 (5): 1007--24. \url{https://doi.org/10.1111/jawr.12108}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Wagner06}{}}%
+Wagner, Richard J, Robert W Boulger Jr, Carolyn J Oblinger, and Brett A Smith. 2006. {``Guidelines and Standard Procedures for Continuous Water-Quality Monitors: Station Operation, Record Computation, and Data Reporting.''} Techniques and Methods 1-D3. Version 1.0. Reston, VA: U.S. Geological Survey. \url{https://doi.org/10.3133/tm1D3}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-Wickham16}{}}%
 Wickham, Hadley. 2016. \emph{Ggplot2: Elegant Graphics for Data Analysis}. Springer-Verlag New York. \url{https://ggplot2.tidyverse.org}.

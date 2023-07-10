@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.7.2)  9 JUL 2023 20:26
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.7.10)  10 JUL 2023 09:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -11,7 +11,7 @@ l.5 \maketitle
                
 Here is how much of TeX's memory you used:
  16 strings out of 477197
- 375 string characters out of 5812281
+ 375 string characters out of 5812280
  1916238 words of memory out of 5000000
  21106 multiletter control sequences out of 15000+600000
  558069 words of font info for 36 fonts, out of 8000000 for 9000
