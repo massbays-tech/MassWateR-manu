@@ -54,12 +54,6 @@ The required data files for using \CRANpkg{MassWateR} are shown in Table \ref{ta
 
 \multicolumn{1}{>{\raggedright}p{\dimexpr 0.6in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{\textbf{Formatted\ file}}}} & \multicolumn{1}{>{\raggedright}p{\dimexpr 2.5in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{\textbf{Description}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.6in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{\textbf{QC\ screening}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.6in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{\textbf{QC\ reporting}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.6in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{\textbf{WQX\ formatting}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.6in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{\textbf{Data\ analysis}}}} \\
 
-\ascline{1.5pt}{666666}{1-6}\endfirsthead \caption[]{\textcolor[HTML]{000000}{\fontsize{7}{8}\selectfont{File\ requirements\ for\ using\ MassWateR.\ \ Check\ marks\ indicate\ which\ file\ is\ required\ for\ each\ part\ of\ the\ MassWateR\ workflow.}}}\label{tab:filreq}\\
-
-\ascline{1.5pt}{666666}{1-6}
-
-\multicolumn{1}{>{\raggedright}p{\dimexpr 0.6in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{\textbf{Formatted\ file}}}} & \multicolumn{1}{>{\raggedright}p{\dimexpr 2.5in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{\textbf{Description}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.6in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{\textbf{QC\ screening}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.6in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{\textbf{QC\ reporting}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.6in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{\textbf{WQX\ formatting}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.6in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{\textbf{Data\ analysis}}}} \\
-
 \ascline{1.5pt}{666666}{1-6}\endhead
 
 
@@ -314,10 +308,10 @@ anlzMWRoutlier(fset = fsetls, param = "DO", group = "month",
 \begin{verbatim}
 #> # A tibble: 3 x 6
 #>   `Monitoring Location ID` `Activity Start Date` `Activity Start Time`
-#>   <chr>                    <dttm>                <chr>                
-#> 1 ELZ-004                  2022-05-15 00:00:00   06:50                
-#> 2 HOP-011                  2022-05-15 00:00:00   06:55                
-#> 3 ELZ-004                  2022-09-11 00:00:00   07:20                
+#>   <chr>                    <date>                <chr>                
+#> 1 ELZ-004                  2022-05-15            06:50                
+#> 2 HOP-011                  2022-05-15            06:55                
+#> 3 ELZ-004                  2022-09-11            07:20                
 #> # i 3 more variables: `Characteristic Name` <chr>, `Result Value` <dbl>,
 #> #   `Result Unit` <chr>
 \end{verbatim}
@@ -372,12 +366,6 @@ tabMWRacc(fset = fsetls, type = "summary")
 \begin{longtable}[c]{|p{1.47in}|p{0.82in}|p{1.08in}|p{0.88in}|p{0.72in}}
 
 
-
-\ascline{1.5pt}{666666}{1-5}
-
-\multicolumn{1}{>{\raggedright}m{\dimexpr 1.47in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{7}{7}\selectfont{Type}}} & \multicolumn{1}{!{\color[HTML]{666666}\vrule width 1pt}>{\raggedright}m{\dimexpr 0.82in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{7}{7}\selectfont{Parameter}}} & \multicolumn{1}{!{\color[HTML]{666666}\vrule width 1pt}>{\raggedright}m{\dimexpr 1.08in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{7}{7}\selectfont{Number\ of\ QC\ Checks}}} & \multicolumn{1}{!{\color[HTML]{666666}\vrule width 1pt}>{\raggedright}m{\dimexpr 0.88in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{7}{7}\selectfont{Number\ of\ Misses}}} & \multicolumn{1}{!{\color[HTML]{666666}\vrule width 1pt}>{\raggedright}m{\dimexpr 0.72in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{7}{7}\selectfont{\%\ Acceptance}}} \\
-
-\ascline{1.5pt}{666666}{1-5}\endfirsthead 
 
 \ascline{1.5pt}{666666}{1-5}
 
@@ -637,14 +625,6 @@ tabMWRacc(fset = fsetls, type = "percent")
 
 \noalign{\global\arrayrulewidth 0pt}\arrayrulecolor[HTML]{000000}
 
-\hhline{>{\arrayrulecolor[HTML]{666666}\global\arrayrulewidth=1.5pt}-|>{\arrayrulecolor[HTML]{666666}\global\arrayrulewidth=1.5pt}-|>{\arrayrulecolor[HTML]{666666}\global\arrayrulewidth=1.5pt}-|>{\arrayrulecolor[HTML]{666666}\global\arrayrulewidth=1.5pt}-|>{\arrayrulecolor[HTML]{666666}\global\arrayrulewidth=1.5pt}-|>{\arrayrulecolor[HTML]{666666}\global\arrayrulewidth=1.5pt}-}\endfirsthead 
-
-\hhline{>{\arrayrulecolor[HTML]{666666}\global\arrayrulewidth=1.5pt}->{\arrayrulecolor[HTML]{666666}\global\arrayrulewidth=1.5pt}->{\arrayrulecolor[HTML]{666666}\global\arrayrulewidth=1.5pt}->{\arrayrulecolor[HTML]{666666}\global\arrayrulewidth=1.5pt}->{\arrayrulecolor[HTML]{666666}\global\arrayrulewidth=1.5pt}->{\arrayrulecolor[HTML]{666666}\global\arrayrulewidth=1.5pt}-}
-
-\multicolumn{1}{>{\raggedright}m{\dimexpr 0.82in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{7}{7}\selectfont{Parameter}}} & \multicolumn{1}{!{\color[HTML]{666666}\vrule width 1pt}>{\centering}m{\dimexpr 0.74in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{7}{7}\selectfont{Field\ Duplicate}}} & \multicolumn{1}{!{\color[HTML]{666666}\vrule width 1pt}>{\centering}m{\dimexpr 0.69in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{7}{7}\selectfont{Lab\ Duplicate}}} & \multicolumn{1}{!{\color[HTML]{666666}\vrule width 1pt}>{\centering}m{\dimexpr 0.58in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{7}{7}\selectfont{Field\ Blank}}} & \multicolumn{1}{!{\color[HTML]{666666}\vrule width 1pt}>{\centering}m{\dimexpr 0.53in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{7}{7}\selectfont{Lab\ Blank}}} & \multicolumn{1}{!{\color[HTML]{666666}\vrule width 1pt}>{\centering}m{\dimexpr 1.07in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{7}{7}\selectfont{Spike/Check\ Accuracy}}} \\
-
-\noalign{\global\arrayrulewidth 0pt}\arrayrulecolor[HTML]{000000}
-
 \hhline{>{\arrayrulecolor[HTML]{666666}\global\arrayrulewidth=1.5pt}-|>{\arrayrulecolor[HTML]{666666}\global\arrayrulewidth=1.5pt}-|>{\arrayrulecolor[HTML]{666666}\global\arrayrulewidth=1.5pt}-|>{\arrayrulecolor[HTML]{666666}\global\arrayrulewidth=1.5pt}-|>{\arrayrulecolor[HTML]{666666}\global\arrayrulewidth=1.5pt}-|>{\arrayrulecolor[HTML]{666666}\global\arrayrulewidth=1.5pt}-}\endhead
 
 
@@ -744,12 +724,6 @@ Detailed information about the QC checks for an individual parameter can be obta
 \begin{longtable}[c]{|p{0.55in}|p{0.60in}|p{0.27in}|p{0.50in}|p{0.69in}|p{0.45in}}
 
 \caption{Field\ Blanks}\label{tab:unnamed-chunk-10}\\
-
-\ascline{1.5pt}{666666}{1-6}
-
-\multicolumn{1}{>{\raggedright}m{\dimexpr 0.55in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{7}{7}\selectfont{Parameter}}} & \multicolumn{1}{!{\color[HTML]{666666}\vrule width 1pt}>{\raggedright}m{\dimexpr 0.6in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{7}{7}\selectfont{Date}}} & \multicolumn{1}{!{\color[HTML]{666666}\vrule width 1pt}>{\raggedright}m{\dimexpr 0.27in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{7}{7}\selectfont{Site}}} & \multicolumn{1}{!{\color[HTML]{666666}\vrule width 1pt}>{\raggedright}m{\dimexpr 0.5in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{7}{7}\selectfont{Result}}} & \multicolumn{1}{!{\color[HTML]{666666}\vrule width 1pt}>{\raggedright}m{\dimexpr 0.69in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{7}{7}\selectfont{Threshold}}} & \multicolumn{1}{!{\color[HTML]{666666}\vrule width 1pt}>{\raggedright}m{\dimexpr 0.45in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{7}{7}\selectfont{Hit/Miss}}} \\
-
-\ascline{1.5pt}{666666}{1-6}\endfirsthead \caption[]{Field\ Blanks}\label{tab:unnamed-chunk-10}\\
 
 \ascline{1.5pt}{666666}{1-6}
 
@@ -1041,13 +1015,17 @@ To ensure that \CRANpkg{MassWateR} is a known resource for potential users and t
 
 As noted above, \CRANpkg{MassWateR} was developed to meet specific needs of water quality professionals in Massachusetts, but the principles for QC reporting, analysis, and WQX data submission are largely universal and the package can be used outside of the state as long as the following minor limitations are addressed. First, some of the parameter thresholds applied to the analysis plots are unique to Massachusetts, whereas others apply more broadly, such as those defined using standards from the USEPA. Users can simply omit the thresholds if they do not apply using \texttt{thresh\ =\ "none"} or add custom thresholds using standard \CRANpkg{ggplot2} functions. Second, the NHD waterbodies used by \texttt{anlzMWRmap()} are specific to watersheds in Massachusetts. Users can omit these layers from the plot using \texttt{addwater\ =\ NULL}, add a base map using the \texttt{maptype} argument, or add custom waterbody layers as simple features objects (Pebesma and Bivand 2023) using the \texttt{geom\_sf()} function from \CRANpkg{ggplot2}. Third, the QC report created by \texttt{qcMWRreview()} uses a format vetted by MADEP. This format may not meet the requirements of other state organization, although the reporting principles are generally universal and the resulting Word document can easily be manually modified. Finally, minor components of the Excel file for WQX submission created by \texttt{tabMWRwqx()} are specific to Massachusetts. This includes the timezone for the \texttt{WQX\ Activity\ Start\ Time\ Zone} field and some default entries for sample collection methods that include \texttt{"MassWateR"} in the text. Each of these can also be modified by hand in the output file. Future enhancements and additions to \CRANpkg{MassWateR} will likely include automated tools to address these minor issues using the package outside of Massachusetts.
 
-Additional future work to improve the functionality of \CRANpkg{MassWateR} is also expected as the user base increases and the functions mature with additional bug fixes or minor enhancements. Specifically, the inclusion of historical data for some of the analysis functions could provide additional context on status and trends for monitoring data at specific locations. This enhancement would require the extraction of existing data already included in the WQP, which would not be significantly challenging given the robust web retrieval tools already available. Existing R packages already leverage these tools (e.g., \CRANpkg{dataRetrieval}) and a similar approach could be usedby \CRANpkg{MassWateR}. A second and more challenging enhancement would be the ability to work with continuous monitoring data collected at high temporal resolution with equipment deployed \emph{in situ}. These data present additional challenges not encountered with routine samples collected at longer time intervals, including increased data volume and additional QC needs (Wagner et al. 2006; Horsburgh et al. 2015). For the latter, automated tools are needed for detecting and handling QC issues common with monitoring equipment deployed in the field for long duration, such as instrument drift, biofouling, or missing data. More complex methods for detecting outliers in continuous monitoring data beyond the existing tools in \CRANpkg{MassWateR} will also be needed (Leigh et al. 2019).
+Additional future work to improve the functionality of \CRANpkg{MassWateR} is also expected as the user base increases and the functions mature with additional bug fixes or minor enhancements. Specifically, the inclusion of historical data for some of the analysis functions could provide additional context on status and trends for monitoring data at specific locations. This enhancement would require the extraction of existing data included in the WQP, which would not be significantly challenging given the robust web retrieval tools already available. Existing R packages leverage these tools (e.g., \CRANpkg{dataRetrieval}) and a similar approach could be used by \CRANpkg{MassWateR}. A second and more challenging enhancement would be the ability to work with continuous monitoring data collected at high temporal resolution with equipment deployed \emph{in situ}. These data present additional challenges not encountered with routine samples collected at longer time intervals, including increased data volume and additional QC needs (Wagner et al. 2006; Horsburgh et al. 2015). For the latter, automated tools are needed for detecting and handling QC issues common with monitoring equipment deployed in the field for long duration, such as instrument drift, biofouling, or missing data. More complex methods for detecting outliers in continuous monitoring data beyond the existing tools in \CRANpkg{MassWateR} will also be needed (Leigh et al. 2019).
 
 \hypertarget{summary}{%
 \section{Summary}\label{summary}}
 
+The \CRANpkg{MassWateR} package represents an important set of functions that are expected to significantly improve how resource managers develop QC assessments and apply exploratory analyses to water quality monitoring data. The package can also expedite the preparation of data for submission to the largest water quality database in the United States, which will likely contribute to the amount of data made available through the WQP. These activities are critically needed to ensure that monitoring data are of sufficient quality and quantity for use in regulatory applications or routine assessment of status and trends of environmental resources. As mentioned throughout this paper, \CRANpkg{MassWateR} was developed to address specific needs for resource management professionals in Massachusetts, although the workflow in Figure \ref{fig:workflow} can easily be applied to data collected elsewhere. Future development of the package will not only make the package functions more generalizable to other locations, but also provide additional features for working with continuous and historical monitoring data. The community of practice developed for \CRANpkg{MassWateR} is expected to grow and the package will be supported by the authors as the user base increases.
+
 \hypertarget{acknowledgments}{%
 \section{Acknowledgments}\label{acknowledgments}}
+
+This work was supported by an Exchange Network grant from the US Environmental Protection Agency awarded to the Massachusetts Bay Estuary Partnership. We thank the early users of \CRANpkg{MassWateR} that contributed ideas on improving the package during initial testing.
 
 \hypertarget{references}{%
 \section*{References}\label{references}}
