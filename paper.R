@@ -3,7 +3,7 @@
 
 ## ----setup, include=FALSE-----------------------------------------------------
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
-library(MassWateR)
+
 library(flextable)
 library(dplyr)
 library(here)
@@ -21,7 +21,7 @@ knitr::include_graphics('figs/workflow.png')
 filerequirements %>% fontsize(part = 'all', size = 9)
 
 
-## ----importflow, fig.cap = 'Pseudocode demonstrating the iterative process of importing a required data file for \\CRANpkg{MassWateR}.  All read functions import an Excel file and the imported file is then passed to a check function.  The function exits if an error is encountered, allowing the user to manually fix the identified error and then import again.  After all checks are passed, a formatting function is applied to correct minor issues (e.g., standardize date format as YYYY-MM-DD) and the final data object is returned.', fig.alt='Diagram showing pseudocode for importing a data file with MassWateR', out.width='100%'----
+## ----importflow, fig.cap = 'Pseudocode demonstrating the iterative process of importing a required data file for \\CRANpkg{MassWateR}.  All read functions import an Excel file and the imported file is then passed to a check function.  The function exits if an error is encountered, allowing the user to manually fix the identified error and then import again.  After all checks are passed, a formatting function is applied to correct minor issues (e.g., standardize date format as YYYY-MM-DD) and the final data object is returned (e.g., `resdat`).', fig.alt='Diagram showing pseudocode for importing and fixing a data file with MassWateR', out.width='100%'----
 knitr::include_graphics('figs/importflow.png')
 
 
@@ -41,8 +41,6 @@ checkMWRresults(chk)
 
 
 ## ---- results = 'hide', echo = T----------------------------------------------
-library(MassWateR)
-
 # import results data
 respth <- system.file("extdata/ExampleResults.xlsx", package = "MassWateR")
 resdat <- readMWRresults(respth)
@@ -67,7 +65,7 @@ wqxdat <- readMWRwqx(wqxpth)
 fsetls <- list(res = resdat, acc = accdat, frecom = frecomdat, sit = sitdat, wqx = wqxdat)
 
 
-## ---- fig.height = 3, fig.width = 6, echo = T, out.width = '100%'-------------
+## ---- fig.height = 4, fig.width = 8, echo = T, out.width = '95%', fig.align = 'center'----
 anlzMWRoutlier(fset = fsetls, param = "DO", group = "month")
 
 
@@ -108,23 +106,23 @@ tabMWRacc(res = resdat, acc = accdat, frecom = frecomdat, type = "individual",
   accchk = "Field Blanks", warn = FALSE)
 
 
-## ----fig.height = 3, fig.width = 6, echo = T, out.width = '100%'--------------
+## ----fig.height = 4, fig.width = 8, echo = T, out.width = '95%', fig.align = 'center'----
 anlzMWRseason(fset = fsetls, param = "DO", thresh = "fresh", 
   group = "month", type = "jitterbox")
 
 
-## ----fig.height = 3, fig.width = 6, echo = T, out.width = '100%'--------------
+## ----fig.height = 4, fig.width = 8, echo = T, out.width = '95%', fig.align = 'center'----
 anlzMWRdate(fset = fsetls, param = 'DO', group = 'locgroup', 
   thresh = 'fresh')
 
 
-## ----fig.height = 3, fig.width = 6, echo = T, out.width = '100%'--------------
+## ----fig.height = 4, fig.width = 8, echo = T,  out.width = '95%', fig.align = 'center'----
 anlzMWRsite(fset = fsetls, param = "DO", thresh = "fresh", type = "box", 
   site = c("ABT-026", "ABT-062", "ABT-077", "ABT-144", "ABT-237", "ABT-301"),
   resultatt = c('DRY', 'WET'), byresultatt = TRUE)
 
 
-## ----fig.height = 6, fig.width = 6, echo = T, out.width = '100%'--------------
+## ----fig.height = 5, fig.width = 5, echo = T, out.width = '95%', fig.align = 'center'----
 anlzMWRmap(fset = fsetls, param = "DO", addwater = "medium")
 
 

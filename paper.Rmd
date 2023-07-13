@@ -57,7 +57,7 @@ preamble: |
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
-library(MassWateR)
+
 library(flextable)
 library(dplyr)
 library(here)
@@ -119,7 +119,7 @@ Additionally, functions may often include a suffix that describes the relevant f
 
 The primary task of the `read` functions is to ensure all imported files follow the required format for the package.  Excel files are the expected format for all inputs and the `read` functions use the `read_excel` function from the \CRANpkg{readxl} package [@Wickham23]. The `read` functions do very little other than import the file - once the file is imported it is immediately passed to one of the relevant `check` functions inside the `read` function.  There are several checks for each type of input file, with the number of checks increasing based on the complexity of the input file.  Each check is printed to the R console on completion, whereas an error is returned at the first instance of a failed check, at which point the function is exited.  The error will typically indicate which parts of the input data need to be changed to rectify the issue, often indicating a specific cell in the Excel file that requires attention. As such, the workflow is intended to be iterative, where a user imports a file, receives an error, manually changes the input file in Excel, then imports the data again until all checks pass (Figure \@ref(fig:importflow)).  Again, this design was purposeful as many monitoring agencies and groups collect data differently and a standard input format for the package was the best option to accommodate potential users.  This may also encourage future standardization among groups for how data are maintained to ease formatting challenges to using \CRANpkg{MassWateR}. A user only needs to format their data once to use the package. 
 
-```{r importflow, fig.cap = 'Pseudocode demonstrating the iterative process of importing a required data file for \\CRANpkg{MassWateR}.  All read functions import an Excel file and the imported file is then passed to a check function.  The function exits if an error is encountered, allowing the user to manually fix the identified error and then import again.  After all checks are passed, a formatting function is applied to correct minor issues (e.g., standardize date format as YYYY-MM-DD) and the final data object is returned.', fig.alt='Diagram showing pseudocode for importing a data file with MassWateR', out.width='100%'}
+```{r importflow, fig.cap = 'Pseudocode demonstrating the iterative process of importing a required data file for \\CRANpkg{MassWateR}.  All read functions import an Excel file and the imported file is then passed to a check function.  The function exits if an error is encountered, allowing the user to manually fix the identified error and then import again.  After all checks are passed, a formatting function is applied to correct minor issues (e.g., standardize date format as YYYY-MM-DD) and the final data object is returned (e.g., `resdat`).', fig.alt='Diagram showing pseudocode for importing and fixing a data file with MassWateR', out.width='100%'}
 knitr::include_graphics('figs/importflow.png')
 ```
 
@@ -147,8 +147,6 @@ The `readMWRresultsview()` function is also available to assist with troubleshoo
 After all file format checks are fixed, a standard approach for using \CRANpkg{MassWateR} is to import all required files and save them as a list of named data frame objects that can be used by nearly all the package functions.  This prevents the need to identify which input datasets are needed for each function, although the latter approach could used because arguments for individual input files are also provided for all functions.  In the latter case, a path or data object can be used as input for each file. For the former approach, the beginning of a script for using the package could appear as follows.  Example files included with the package are imported, whereas a user will specify paths to their own files.   
 
 ```{r, results = 'hide', echo = T}
-library(MassWateR)
-
 # import results data
 respth <- system.file("extdata/ExampleResults.xlsx", package = "MassWateR")
 resdat <- readMWRresults(respth)
@@ -181,7 +179,7 @@ An additional set of functions can be used to check for outliers in the results 
 
 The `anlzMWRoutlier()` function uses the results file and data quality objectives for accuracy to plot potential outliers by month.  The accuracy file is used to automatically identify the y-axis scaling (as arithmetic or log) and to replace concentrations with appropriate values for those labelled as beyond detection. Outliers are defined using the standard definition of 1.5 times the interquartile range (the 25th to 75th percentile) of a parameter and can be visually identified as points above or below the whiskers in the boxplots.  The station name for a point is also shown.  The `param` specifies the water quality parameter to evaluate and the `group` argument specifies how the boxplots are grouped (by year, month, week, or station).  In the following example, three stations are identified as potential outliers for the respective month.
 
-```{r, fig.height = 3, fig.width = 6, echo = T, out.width = '100%'}
+```{r, fig.height = 4, fig.width = 8, echo = T, out.width = '95%', fig.align = 'center'}
 anlzMWRoutlier(fset = fsetls, param = "DO", group = "month")
 ```
 
@@ -252,7 +250,7 @@ The analysis functions in \CRANpkg{MassWateR} provide a simple approach to quick
 
 Seasonal trends can be evaluated using the `anlzMWRseason()` function that summarizes results for a single parameter using boxplots or barplots with seasonal groups assigned to months or weeks of the year. Boxplots or barplots can also include jittered points of the observations on top or only the jittered points can be shown.  Below demonstrates a jittered boxplot of dissolved oxygen observations by month.  
 
-```{r fig.height = 3, fig.width = 6, echo = T, out.width = '100%'}
+```{r fig.height = 4, fig.width = 8, echo = T, out.width = '95%', fig.align = 'center'}
 anlzMWRseason(fset = fsetls, param = "DO", thresh = "fresh", 
   group = "month", type = "jitterbox")
 ```
@@ -263,14 +261,14 @@ The y-axis scaling of the plot is also determined automatically from the data in
 
 The `anlzMWRdate()` function plots results continuous in time on the date the samples or measurements were collected.  This information can be use evaluate how samples have changed at individual sites over time or as aggregate samples across sites.  In the former case, individual points and lines are used for each site with appropriate labels. For the latter case, sites are aggregated and appropriate summary statistics are shown as the mean with 95% confidence intervals.  Sites can be aggregated by sample dates or by "location groups" in the site metadata file.  For example, all sites along the same river or tributary can be aggregated.  The following demonstrates an aggregation of sites by the mainstem of the Assabet river and its tributaries using the `group = "locgroup"` argument.  A user can specify any desired grouping in the `Location Group` column of the site metadata file. 
 
-```{r fig.height = 3, fig.width = 6, echo = T, out.width = '100%'}
+```{r fig.height = 4, fig.width = 8, echo = T, out.width = '95%', fig.align = 'center'}
 anlzMWRdate(fset = fsetls, param = 'DO', group = 'locgroup', 
   thresh = 'fresh')
 ```
 
 The `anlzMWRsite()` function can be used to view distributions of a parameter across sites. This function summarizes results for a single parameter using boxplots or barplots separately for each site on the x-axis. Boxplots or barplots can also include jittered points of the observations on top or only the jittered points can be shown. Results at each site can also be grouped by the `Result Attribute` column in the results file, where a user can enter arbitrary grouping criteria for samples.  For example, sites can be grouped by wet or dry conditions if this information is included in the results file.  Individual sites can also be specified with the `site` argument.
 
-```{r fig.height = 3, fig.width = 6, echo = T, out.width = '100%'}
+```{r fig.height = 4, fig.width = 8, echo = T,  out.width = '95%', fig.align = 'center'}
 anlzMWRsite(fset = fsetls, param = "DO", thresh = "fresh", type = "box", 
   site = c("ABT-026", "ABT-062", "ABT-077", "ABT-144", "ABT-237", "ABT-301"),
   resultatt = c('DRY', 'WET'), byresultatt = TRUE)
@@ -278,7 +276,7 @@ anlzMWRsite(fset = fsetls, param = "DO", thresh = "fresh", type = "box",
 
 Finally, maps of results at each site can be created with the `anlzMWRmap()` function.  Parameter values at each site are summarized with colors indicating relative values and the maps can include various spatial information as reference. For example, hydrologic lines and waterbodies from the National Hydrograpy Dataset (NHD) can be shown with varying level of detail and base maps can be included from the \CRANpkg{ggmap} package [@Kahle13].  NHD data were included to provide more specific information on hydrologic features of interest because of insufficient detail in basemaps.  These datasets are available from an external source and clipped to an approximate bounding box for the selected stations.  Currently, only flowlines and waterbodies for Massachusetts are included, although examples are provided in a package [vignette](https://massbays-tech.github.io/MassWateR/articles/modifying.html#modifying-masswater-plots) for including custom shapefiles.  The below example shows mean dissolved oxygen concentrations using the medium level of detail for the NHD maps (`addwater = "medium"`).
 
-```{r fig.height = 6, fig.width = 6, echo = T, out.width = '100%'}
+```{r fig.height = 5, fig.width = 5, echo = T, out.width = '95%', fig.align = 'center'}
 anlzMWRmap(fset = fsetls, param = "DO", addwater = "medium")
 ```
 
