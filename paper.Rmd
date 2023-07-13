@@ -2,7 +2,7 @@
 title: "MassWateR: Improving quality control, analysis, and sharing of water quality data"
 date: "`r Sys.Date()`"
 abstract: >
-  An abstract of less than 150 words.
+  The long-term protection and restoration of aquatic resources depends on accurate and precise monitoring data.  These data require systematic quality control and analysis tools for regulatory applications or routine assessments.  The \CRANpkg{MassWateR} package provides several functions that can facilitate quality control, analysis, and data submission for water quality data collected from different monitoring programs.  The tools were developed to address specific regional needs for Massachusetts, USA, but the principles can be generalized to monitoring data collected at any location.  Users can create quality control reports, perform outlier analyses, and assess various trends by season, date, and site.  Functions are also included to prepare data for submission to the Water Quality Exchange data portal, the largest water quality database in the United States.  These automated and reproducible assessments are expected to increase the amount of usable data for the evaluation of aquatic resources.  
 draft: true
 author:  
   # see ?rjournal_article for more information
