@@ -13,7 +13,7 @@ flextable::set_flextable_defaults(font.size = 7, padding = 0)
 load(file = here('tabs/filerequirements.RData'))
 
 
-## ----workflow, fig.cap = 'Workflow demonstrating how a user could engage with the \\CRANpkg{MassWateR} package.  A user can apply one to any of the four steps depending on their need.  The first step, QC screening, is often iterative as a user can modify parts of the raw data based on input checks or outliers.  The second step can be used to create a QC report for submission to a regulatory agency.  The third step can create a formatted table for WQX submission.  The fourth step is data analysis and visualization, using \\CRANpkg{MassWateR} functions and downstream analysis with additional R packages and functions.  All steps require a formatted input file.  WQX: Water Quality Exchange; QC: Quality Control.', fig.alt='Workflow diagram showing four ways to engage with MassWateR', out.width='100%'----
+## ----workflow, fig.cap = 'Workflow demonstrating how a user could engage with the \\CRANpkg{MassWateR} package.  A user can apply one to any of the four steps depending on their need.  The first step, QC screening, is often iterative as a user can modify parts of the raw data based on input checks or outliers.  The second step can be used to create a QC report for submission to a regulatory agency.  The third step can create a formatted table for WQX submission.  The fourth step is data analysis and visualization, using \\CRANpkg{MassWateR} functions and downstream analysis with additional R packages and functions.  All steps require formatted input files.  WQX: Water Quality Exchange; QC: Quality Control.', fig.alt='Workflow diagram showing four ways to engage with MassWateR', out.width='100%'----
 knitr::include_graphics('figs/workflow.png')
 
 
@@ -57,7 +57,7 @@ frecomdat <- readMWRfrecom(frecompth)
 sitpth <- system.file("extdata/ExampleSites.xlsx", package = "MassWateR")
 sitdat <- readMWRsites(sitpth)
 
-# import WQX meta data
+# import WQX metadata
 wqxpth <- system.file("extdata/ExampleWQX.xlsx", package = "MassWateR")
 wqxdat <- readMWRwqx(wqxpth)
 
@@ -86,6 +86,7 @@ anlzMWRoutlier(fset = fsetls, param = "DO", group = "month",
 
 ## ---- echo = T, eval = F------------------------------------------------------
 #> qcMWRreview(fset = fsetls, output_dir = getwd())
+#> #> Report created successfully! File located at /tmp/RtmpUzzrbC/qcreview.docx
 
 
 ## ----qcex, fig.cap = "The first two pages of the quality control report that evaluates the results data relative to data quality objectives.  The first page shows the data quality objectives for accuracy, frequency, and completeness.  The second page shows QC results for frequency and completeness.  Parameters shown in red or marked as 'MISS' failed the data quality objectives.  Users can edit the Word file as needed, e.g., entering the organization name or adding notes.", fig.alt = "A Word document showing the first two pages of the quality control report.", out.width = '50%', fig.show='hold'----
@@ -103,7 +104,7 @@ tabMWRacc(fset = fsetls, type = "percent")
 
 ## -----------------------------------------------------------------------------
 tabMWRacc(res = resdat, acc = accdat, frecom = frecomdat, type = "individual", 
-  accchk = "Field Blanks", warn = FALSE)
+  accchk = "Field Blanks")
 
 
 ## ----fig.height = 4, fig.width = 8, echo = T, out.width = '95%', fig.align = 'center'----
