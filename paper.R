@@ -25,7 +25,7 @@ filerequirements %>% fontsize(part = 'all', size = 9)
 knitr::include_graphics('figs/importflow.png')
 
 
-## ---- echo = T, message = T---------------------------------------------------
+## ---- echo = T, eval = T, message = F-----------------------------------------
 library(MassWateR)
 
 # import results data
@@ -33,11 +33,15 @@ respth <- system.file("extdata/ExampleResults.xlsx", package = "MassWateR")
 resdat <- readMWRresults(respth)
 
 
-## ---- error = T, echo = T, message = T----------------------------------------
-chk <- resdat
-chk[4, 2] <- "Sample"
-chk[135, 2] <- "Field"
-checkMWRresults(chk)
+## ---- eval = F, echo = T------------------------------------------------------
+#> chk <- resdat
+#> chk[4, 2] <- "Sample"
+#> chk[135, 2] <- "Field"
+#> checkMWRresults(chk)
+
+
+## ---- echo = T, eval = F------------------------------------------------------
+#> apply(readxl::read_excel('path/to/results.xlsx'), 2, unique)
 
 
 ## ---- results = 'hide', echo = T----------------------------------------------
@@ -94,17 +98,24 @@ knitr::include_graphics('figs/qcreview1.png')
 knitr::include_graphics('figs/qcreview2.png')
 
 
-## ---- echo = T----------------------------------------------------------------
-tabMWRacc(fset = fsetls, type = "summary")
+## ---- echo = T, eval = F------------------------------------------------------
+#> tabMWRacc(fset = fsetls, type = "summary")
+
+## ---- echo = F, eval = T------------------------------------------------------
+resin <- resdat[resdat$`Characteristic Name` %in% c('Ammonia', 'TP'), ]
+tabMWRacc(res = resin, acc = accdat, frecom = frecomdat, type = "summary")
 
 
 ## ---- echo = T----------------------------------------------------------------
 tabMWRacc(fset = fsetls, type = "percent")
 
 
-## -----------------------------------------------------------------------------
-tabMWRacc(res = resdat, acc = accdat, frecom = frecomdat, type = "individual", 
-  accchk = "Field Blanks")
+## ---- echo = T, eval = F------------------------------------------------------
+#> tabMWRacc(fset = fsetls, type = "individual", accchk = "Field Blanks")
+
+## ---- echo = F, eval = T------------------------------------------------------
+resin <- resdat[resdat$`Characteristic Name` %in% c('TP', 'Ammonia') ,]
+tabMWRacc(res = resin, acc = accdat, frecom = frecomdat, type = "individual", accchk = "Field Blanks", warn = F, caption = F)
 
 
 ## ----fig.height = 4, fig.width = 8, echo = T, out.width = '95%', fig.align = 'center'----
