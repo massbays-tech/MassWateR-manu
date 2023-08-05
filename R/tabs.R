@@ -9,10 +9,10 @@ chkloc <- here(list.files('tabs', pattern = 'check', full.names = T))
 totab <- tibble(
   `Formatted file` = c('Results', 'DQO accuracy', 'DQO frequency and completeness', 'Sites', 'WQX metadata'), 
   `Description` = c('Water quality results organized by sample location and date', 'Summary of data quality objectives that describe quality control accuracy for data in the results file', 'Summary of data quality objectives that describe quality control frequency and completeness measures for data in the results file', 'A site metadata file, including location names, latitude, longitude, and additional grouping factors for sites in the results file', 'A wqx metadata file required for generating output to facilitate data upload to WQX'),
-  `QC screening` = c('r', 'r', 'r', 'r', ''), 
-  `QC reporting` = c('r', 'r', 'r', '', ''),
-  `WQX formatting` = c('r', 'r', '', 'r', 'r'),
-  `Data analysis` = c('r', 'r', '', 'r', '')
+  `1. QC screening` = c('r', 'r', 'r', 'r', ''), 
+  `2. QC reporting` = c('r', 'r', 'r', '', ''),
+  `3. Data analysis` = c('r', 'r', '', 'r', ''),
+  `4. WQX formatting` = c('r', 'r', '', 'r', 'r'),
 ) %>% 
   mutate_at(vars(-`Formatted file`, -`Description`), function(x) gsub('^r$', chkloc, x))
 
@@ -31,7 +31,7 @@ tab <- flextable(totab) %>%
   align(j = 3:6, align = 'center', part = 'all') %>% 
   set_caption(
     as_paragraph(
-      as_chunk("File requirements for using MassWateR.  Check marks indicate which file is required for each part of the MassWateR workflow.", props = fp_text_default(font.family = "Arial"))
+      as_chunk("File requirements for using MassWateR.  Check marks indicate which file is required for each part of the MassWateR workflow. DQO: Data Quality Objective; QC: Quality Control.", props = fp_text_default(font.family = "Arial"))
               ), 
     word_stylename = "Table Caption"
     )

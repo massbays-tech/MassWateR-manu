@@ -21,7 +21,7 @@ knitr::include_graphics('figs/workflow.png')
 filerequirements %>% fontsize(part = 'all', size = 9)
 
 
-## ----importflow, fig.cap = 'Pseudocode demonstrating the iterative process of importing a required data file for \\CRANpkg{MassWateR}.  All read functions import an Excel file and the imported file is then passed to a check function.  The function exits if an error is encountered, allowing the user to manually fix the identified error and then import again.  After all checks are passed, a formatting function is applied to correct minor issues (e.g., standardize date format as YYYY-MM-DD) and the final data object is returned (e.g., `resdat`).', fig.alt='Diagram showing pseudocode for importing and fixing a data file with MassWateR', out.width='100%'----
+## ----importflow, fig.cap = 'Pseudocode demonstrating the iterative process of importing a required data file for \\CRANpkg{MassWateR}.  All read functions import an Excel file from the user-specified path (e.g., `respth`) and the imported file is then passed to a check function.  The function exits if an error is encountered, allowing the user to manually fix the identified error and then import again.  After all checks are passed, a formatting function is applied to correct minor issues (e.g., standardize date format as YYYY-MM-DD) and the final data object is returned (e.g., `resdat`).', fig.alt='Diagram showing pseudocode for importing and fixing a data file with MassWateR', out.width='100%'----
 knitr::include_graphics('figs/importflow.png')
 
 
@@ -92,7 +92,7 @@ anlzMWRoutlier(fset = fsetls, param = "DO", group = "month",
 #> qcMWRreview(fset = fsetls, output_dir = getwd())
 
 
-## ----qcex, fig.cap = "The first two pages of the quality control report that evaluates the results data relative to data quality objectives.  The first page shows the data quality objectives for accuracy, frequency, and completeness.  The second page shows QC results for frequency and completeness.  Parameters shown in red or marked as 'MISS' failed the data quality objectives.  Users can edit the Word file as needed, e.g., entering the organization name or adding notes.", fig.alt = "A Word document showing the first two pages of the quality control report.", out.width = '50%', fig.show='hold'----
+## ----qcex, fig.cap = "The first two of sixteen pages of the quality control report created by `qcMWRreview()` that evaluates the results data relative to data quality objectives.  The first page shows the data quality objectives for accuracy, frequency, and completeness.  The second page shows QC results for frequency and completeness.  Parameters shown in red or marked as 'MISS' failed the data quality objectives.  Users can edit the Word file as needed, e.g., entering the organization name or adding notes.", fig.alt = "A Word document showing the first two pages of the quality control report.", out.width = '50%', fig.show='hold'----
 knitr::include_graphics('figs/qcreview1.png')
 knitr::include_graphics('figs/qcreview2.png')
 
