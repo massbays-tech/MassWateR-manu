@@ -33,20 +33,13 @@ execute:
   echo: false
   warning: false
   message: false
-  ft.keepnext: false
-  ft.align: left
 ---
 
 ```{r}
 #| include: false
 
-library(flextable)
-library(officer)
-library(officedown)
 library(dplyr)
 library(here)
-
-flextable::set_flextable_defaults(font.size = 7, padding = 0)
 
 load(file = here('tabs/filerequirements.RData'))
 ```
@@ -70,23 +63,17 @@ This paper describes the *MassWateR* package developed to improve how environmen
 To our knowledge, there are no existing R packages on CRAN that can be used to facilitate QC of water quality data, nor are any available that facilitate submission to existing databases.  However, there are several that can be used to retrieve and analyze data from existing sources (see the CRAN [Hydrology](https://cran.r-project.org/web/views/Hydrology.html) Task View).  In particular, the *dataRetrieval* package [@DeCicco22] has been used widely to retrieve data from the WQP, which is the interface for accessing data submitted using WQX.  This package leverages a robust API to query existing water quality data in standardized format provided by the WQP.  As such, data retrieval using existing web services is much simpler than data submission, as data formatting requirements do not apply when retrieving data.  Developing a robust tool that can facilitate the upload of data to WQX, in addition to streamlining QC processes, would further the value of packages like *dataRetrieval* by increasing the amount of data that can be accessed through the WQP.  The *MassWateR* package was developed to provide this benefit.
 
 Users can engage with *MassWateR* to achieve different goals.  This design was intentional based on likely differences in needs among the user community.  Although increasing data submission and facilitating QC reporting was the primary goal, we also assumed that users may not want to do both.  That is, state institutions require QC reporting for regulatory assessments, whereas data submission to WQX may be a separate process.  Users may also simply have a need to explore trends or to summarize their data, while also wanting to extend these analyses beyond *MassWateR* using additional R packages. @fig-workflow demonstrates how a user may apply the functions in *MassWateR* once the required data are imported.  The functions allow a user to engage with their data several ways. The first step, QC screening, is often iterative as a user can modify parts of the raw data based on input checks or outliers. The second step can be used to create a QC report for submission to a regulatory agency. The third step is data analysis and visualization, using MassWateR functions and downstream analysis with additional R packages and functions. The fourth and final step can create a formatted table for WQX submission. 
- 
-```{r}
-#| label: fig-workflow
-#| fig-cap: 'Workflow demonstrating how a user could engage with the *MassWateR* package. WQX: Water Quality Exchange; QC: Quality Control.'
-#| fig-alt: 'Workflow diagram showing four ways to engage with *MassWateR*'
-#| out-width: '100%'
-knitr::include_graphics('figs/workflow.png')
-```
+
+![Workflow demonstrating how a user could engage with the *MassWateR* package. WQX: Water Quality Exchange; QC: Quality Control.](figs/workflow.png){#fig-workflow width=100% fig-alt="Workflow diagram showing four ways to engage with *MassWateR*"}
 
 No matter the user need, all data inputs to *MassWateR* must follow a strict format.  Developing a workflow to accommodate data inputs from the dozens of potential users from several organizations that use different data formats would have been impractical.  As such, the primary limitation to using the package is to adhere to the formatting requirements for all input files.  Several [resources](https://massbays-tech.github.io/MassWateR/RESOURCES.html) are provided on the package web page to assist users in formatting their data.  These resources included several training activities that were conducted during package development and templates demonstrating the appropriate format and rationale.  The trainings, *pkgdown* [website](https://massbays-tech.github.io/MassWateR/) [@Wickham22], and [Community of Practice forum](https://massbays.discourse.group/login) were also implemented so that learning R was not a significant limitation for using the package.
 
-The required data files for using *MassWateR* are shown in `r run_reference(id = "tbl-filreq")`, including how each file applies to the workflow steps in @fig-workflow.  The files are imported into R using specific `read` functions with relevant checks, explained in the next section.  These checks verify multiple requirements outlined in the template files, with informative errors or warnings returned to the console to prompt the user on the required action to remedy a formatting issue.  The largest input file required for all parts of the workflow in @fig-workflow is the results file.  This file includes all water quality monitoring data to be used with the package and the recommendation is that the results data include a year of sampling as reporting typically follows an annual cycle. The results file design also considered WQX requirements to facilitate data submission. As such, the formatting requirements for the results file are the most burdensome for potential users and additional functions are available to assist in this effort.
+The required data files for using *MassWateR* are shown in @tbl-filreq, including how each file applies to the workflow steps in @fig-workflow.  The files are imported into R using specific `read` functions with relevant checks, explained in the next section.  These checks verify multiple requirements outlined in the template files, with informative errors or warnings returned to the console to prompt the user on the required action to remedy a formatting issue.  The largest input file required for all parts of the workflow in @fig-workflow is the results file.  This file includes all water quality monitoring data to be used with the package and the recommendation is that the results data include a year of sampling as reporting typically follows an annual cycle. The results file design also considered WQX requirements to facilitate data submission. As such, the formatting requirements for the results file are the most burdensome for potential users and additional functions are available to assist in this effort.
 
 ```{r}
 #| label: tbl-filreq
 #| tbl-cap: 'File requirements for using MassWateR.  Check marks indicate which file is required for each part of the MassWateR workflow. DQO: Data Quality Objective; QC: Quality Control.'
-filerequirements
+knitr::kable(filerequirements)
 ```
 
 The following sections describe the basic approach to using functions in *MassWateR* for any of the processes in the workflow.  The naming convention for the functions is meant to provide users with an intuitive format for understanding what each funcfiletion does and the step of the workflow for which the function applies.  Although there are some exceptions to this nomenclature, the general format includes a prefix for each function as follows.  Each prefix also includes `MWR` to avoid namespace conflicts with other packages (e.g., `readMWR`).  
@@ -113,13 +100,7 @@ Additionally, functions may often include a suffix that describes the relevant f
 
 The primary task of the `read` functions is to ensure all imported files follow the required format for the package.  Excel files are the expected format for all inputs and the `read` functions use the `read_excel` function from the *readxl* package [@Wickham23]. The `read` functions do very little other than import the file - once the file is imported it is immediately passed to one of the relevant `check` functions inside the `read` function.  There are several checks for each type of input file, with the number of checks increasing based on the complexity of the input file.  Each check is printed to the R console on completion, whereas an error is returned at the first instance of a failed check, at which point the function exits.  The error will typically indicate which parts of the input file need to be changed to rectify the issue, often indicating a specific cell in the Excel file that requires attention. As such, the workflow is intended to be iterative, where a user imports a file, receives an error, manually changes the input file in Excel, then imports the data again until all checks pass (@fig-importflow).  Again, this design was intentional as many monitoring agencies and groups organize data differently and a standard input format for the package was the best option to accommodate all potential users.  This may also encourage future standardization among monitoring groups for how data are maintained to ease formatting challenges to using *MassWateR*. A user only needs to format their data once to use the package. 
 
-```{r}
-#| label: fig-importflow
-#| fig-cap: "Pseudocode demonstrating the iterative process of importing a required data file for *MassWateR*.  All read functions import an Excel file from the user-specified path (e.g., `respth`) and the imported file is then passed to a check function.  The function exits if an error is encountered, allowing the user to manually fix the identified error and then import again.  After all checks are passed, a formatting function is applied to correct minor issues (e.g., standardize date format as YYYY-MM-DD) and the final data object is returned (e.g., `resdat`)."
-#| fig-alt: 'Diagram showing pseudocode for importing and fixing a data file with *MassWateR*'
-#| out-width: "100%"
-knitr::include_graphics('figs/importflow.png')
-```
+![Pseudocode demonstrating the iterative process of importing a required data file for *MassWateR*.  All read functions import an Excel file from the user-specified path (e.g., `respth`) and the imported file is then passed to a check function.  The function exits if an error is encountered, allowing the user to manually fix the identified error and then import again.  After all checks are passed, a formatting function is applied to correct minor issues (e.g., standardize date format as YYYY-MM-DD) and the final data object is returned (e.g., `resdat`).](figs/importflow.png){#fig-importflow fig-alt="Diagram showing pseudocode for importing and fixing a data file with *MassWateR*" width=100%}
 
 A correctly formatted input file would be imported as follows, with the messages in the console indicating the checks that were performed and that all checks were successful.  Below demonstrates what would be shown for the results file using an example dataset included with the package.  A total of fifteen checks are applied to the results file (described in detail in the [help documentation](https://massbays-tech.github.io/MassWateR/reference/checkMWRresults.html) and [vignettes](https://massbays-tech.github.io/MassWateR/articles/inputs.html#surface-water-quality-results)). 
 
