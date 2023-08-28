@@ -3,9 +3,12 @@ format:
   docx:
     reference-doc: my_styles.docx
     number-sections: true
-title: "MassWateR: Improving Quality Control, Analysis, and Sharing of Water Quality Data"
+title: "MassWateR: Improving quality control, analysis, and sharing of water quality data"
 bibliography: refs.bib
 csl: plos-one.csl
+crossref:
+  fig-title: Fig
+  fig-prefix: Fig 
 author: 
   - Marcus W Beck:
       email: mbeck@tbep.org
@@ -21,9 +24,9 @@ author:
       correspondence: false
  
 institute:
-  - TBEP: Tampa Bay Estuary Program, St. Petersburg, Florida 33701 USA
+  - TBEP: Tampa Bay Estuary Program, St. Petersburg, Florida, USA
   - ACA: ACASAK Consulting, Boston, Massachusetts USA
-  - MASS: Massachusetts Bays National Estuary Partnership, Boston, Massachusetts 02125 USA
+  - MASS: Massachusetts Bays National Estuary Partnership, Boston, Massachusetts, USA
 
 filters: 
   - templates/scholarly-metadata.lua
@@ -39,6 +42,7 @@ execute:
   message: false
   ft.keepnext: false
   ft.align: left
+  fig-format: svg
   fig-dpi: 300
 ---
 
@@ -56,6 +60,8 @@ load(file = here('tabs/filerequirements.RData'))
 ```
 
 Short title: *MassWateR* R package for water quality data
+
+{{< pagebreak >}}
 
 ## Abstract {.unnumbered}
 
@@ -77,7 +83,7 @@ To our knowledge, there are no existing R packages on CRAN that can be used to f
 
 Users can engage with *MassWateR* to achieve different goals.  This design was intentional based on likely differences in needs among the user community.  Although increasing data submission and facilitating QC reporting was the primary goal, we also assumed that users may not want to do both.  That is, state institutions require QC reporting for regulatory assessments, whereas data submission to WQX may be a separate process.  Users may also simply have a need to explore trends or to summarize their data, while also wanting to extend these analyses beyond *MassWateR* using additional R packages. @fig-workflow demonstrates how a user may apply the functions in *MassWateR* once the required data are imported.  The functions allow a user to engage with their data several ways. The first step, QC screening, is often iterative as a user can modify parts of the raw data based on input checks or outliers. The second step can be used to create a QC report for submission to a regulatory agency. The third step is data analysis and visualization, using MassWateR functions and downstream analysis with additional R packages and functions. The fourth and final step can create a formatted table for WQX submission. 
 
-![Workflow demonstrating how a user could engage with the *MassWateR* package. WQX: Water Quality Exchange; QC: Quality Control.](images/workflow.png){#fig-workflow width=100% fig-alt="Workflow diagram showing four ways to engage with *MassWateR*"}
+![Workflow demonstrating how a user could engage with the *MassWateR* package. WQX: Water Quality Exchange; QC: Quality Control.](images/workflow.tif){#fig-workflow width=100% fig-alt="Workflow diagram showing four ways to engage with *MassWateR*"}
 
 No matter the user need, all data inputs to *MassWateR* must follow a strict format.  Developing a workflow to accommodate data inputs from the dozens of potential users from several organizations that use different data formats would have been impractical.  As such, the primary limitation to using the package is to adhere to the formatting requirements for all input files.  Several [resources](https://massbays-tech.github.io/MassWateR/RESOURCES.html) are provided on the package web page to assist users in formatting their data.  These resources included several training activities that were conducted during package development and templates demonstrating the appropriate format and rationale.  The trainings, *pkgdown* [website](https://massbays-tech.github.io/MassWateR/) [@Wickham22], and [Community of Practice forum](https://massbays.discourse.group/login) were also implemented so that learning R was not a significant limitation for using the package.
 
@@ -113,7 +119,7 @@ Additionally, functions may often include a suffix that describes the relevant f
 
 The primary task of the `read` functions is to ensure all imported files follow the required format for the package.  Excel files are the expected format for all inputs and the `read` functions use the `read_excel` function from the *readxl* package [@Wickham23]. The `read` functions do very little other than import the file - once the file is imported it is immediately passed to one of the relevant `check` functions inside the `read` function.  There are several checks for each type of input file, with the number of checks increasing based on the complexity of the input file.  Each check is printed to the R console on completion, whereas an error is returned at the first instance of a failed check, at which point the function exits.  The error will typically indicate which parts of the input file need to be changed to rectify the issue, often indicating a specific cell in the Excel file that requires attention. As such, the workflow is intended to be iterative, where a user imports a file, receives an error, manually changes the input file in Excel, then imports the data again until all checks pass (@fig-importflow).  Again, this design was intentional as many monitoring agencies and groups organize data differently and a standard input format for the package was the best option to accommodate all potential users.  This may also encourage future standardization among monitoring groups for how data are maintained to ease formatting challenges to using *MassWateR*. A user only needs to format their data once to use the package. 
 
-![Pseudocode demonstrating the iterative process of importing a required data file for *MassWateR*.  All read functions import an Excel file from the user-specified path (e.g., `respth`) and the imported file is then passed to a check function.  The function exits if an error is encountered, allowing the user to manually fix the identified error and then import again.  After all checks are passed, a formatting function is applied to correct minor issues (e.g., standardize date format as YYYY-MM-DD) and the final data object is returned (e.g., `resdat`).](images/importflow.png){#fig-importflow fig-alt="Diagram showing pseudocode for importing and fixing a data file with *MassWateR*" width=100%}
+![Pseudocode demonstrating the iterative process of importing a required data file for *MassWateR*.  All read functions import an Excel file from the user-specified path (e.g., `respth`) and the imported file is then passed to a check function.  The function exits if an error is encountered, allowing the user to manually fix the identified error and then import again.  After all checks are passed, a formatting function is applied to correct minor issues (e.g., standardize date format as YYYY-MM-DD) and the final data object is returned (e.g., `resdat`).](images/importflow.tif){#fig-importflow fig-alt="Diagram showing pseudocode for importing and fixing a data file with *MassWateR*" width=100%}
 
 A correctly formatted input file would be imported as follows, with the messages in the console indicating the checks that were performed and that all checks were successful.  Below demonstrates what would be shown for the results file using an example dataset included with the package.  A total of fifteen checks are applied to the results file (described in detail in the [help documentation](https://massbays-tech.github.io/MassWateR/reference/checkMWRresults.html) and [vignettes](https://massbays-tech.github.io/MassWateR/articles/inputs.html#surface-water-quality-results)). 
 
@@ -275,7 +281,7 @@ qcMWRreview(fset = fsetls, output_dir = getwd())
 #> Report created successfully! File located at /tmp/RtmpUzzrbC/qcreview.docx
 ```
 ![The first two of sixteen pages of the quality control report created by `qcMWRreview()` that evaluates the results data relative to data quality objectives.  The first page shows the data quality objectives for accuracy, frequency, and completeness.  The second page shows QC results for frequency and completeness.  Parameters shown in red or marked as 'MISS' failed the data quality objectives.  Users can edit the Word file as needed, e.g., entering the organization name or adding notes.
-](images/qcex.png){#fig-qcex}
+](images/qcex.tif){#fig-qcex}
 
 The QC report is built using several functions that can be used individually as needed.  In particular, the `tabMWRacc()`, `tabMWRfre()`, and `tabMWRcom()` create *flextable* [@Gohel23] objects that can be viewed in RStudio and are compatible with Word output.  These functions are useful for understanding how the QC checks are created for the separate components of the QC report. For example, the `tabMWRacc()` function evaluates accuracy checks for field duplicates, lab duplicates, field blanks, lab blanks, and lab spikes/instrument checks for QC records in the results file based on DQOs in the accuracy file.  The function can return a summary of all checks as follows (only ammonia and total phosphorus are shown for brevity):
 
