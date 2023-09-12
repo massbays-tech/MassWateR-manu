@@ -2,6 +2,8 @@
 format: 
   docx:
     reference-doc: response_styles.docx
+bibliography: ../refs.bib
+csl: ../plos-one.csl
 
 execute: 
   echo: false
@@ -14,96 +16,102 @@ execute:
 spelling::spell_check_files(here::here('revision/review-response.qmd'))
 ```
 
-We sincerely thank the academic editor and two reviewers for providing thoughtful comments on our manuscript.  We provide a point-by-point response to these comments below.
+We sincerely thank the academic editor and two reviewers for providing thoughtful comments on our manuscript. We provide a point-by-point response to these comments below. We hope that these responses and changes to the manuscript are satisfactory.
 
 ## Academic Editor
 
 Though one of the reviewers recommended a complete rejection, I found that this study could be of benefit to the community especially in the industry 4.0 era. However, I request that you take into consideration the following while revising your manuscript.
 
-1. You should describe explicitly how the package provides a better alternative to all the other existing packages. Where applicable, cite the weaknesses of the existing packages with supporting citations. 
+1.  You should describe explicitly how the package provides a better alternative to all the other existing packages. Where applicable, cite the weaknesses of the existing packages with supporting citations.
 
-__Response__:
+**Response**: Thank you for this comment. As noted in the original submission on line 88, there are no other R packages that we are aware of that provide similar functionality. As such, there is no basis of comparison of MassWateR to determine relative strengths/weakness with other packages. However, we have added text describing other R packages that are somewhat related and have included a description of software packages outside of the R environment to provide a more comprehensive discussion of alternatives. The following additions were made:
 
-2. Make appropriate citations to literature sources. For example, in L26 and L29, you talk about an Act and an EU framework whose sources are not cited. The same applies to L39-40, where you argue out why this communication could be important but without any supporting citation(s).  Similar omissions are evident in the DISCUSSION where you should make appropriate citation of the ‘‘community of practice established’’ and any outcomes (L521-537, and so forth). 
+"The *TADA* R package [@Mullin22] is also currently under development as a resource for for compiling and evaluating data from the WQP. *TADA* is similar to *dataRetrieval* in that it can used for importing data, but the package is also expected to provide more comprehensive methods for cleaning, filtering, and processing data using the rich qualifier codes provided by WQP."
 
-__Response__:
+"Other software platforms outside of the R environment provide various services for quality control of water quality data. The [Aquarius](https://aquaticinformatics.com/products/aquarius-environmental-water-data-management/) software environment is a proprietary resource for managing hydrologic and water quality data and is used by several private and public institutions. Functionality is provided to pre-process and synthesize multiple data streams, manually correct erroneous values, and to visualize results for decision-making. A graphical user interface is provided to access the various features of the software as compared to a programmatic approach for building custom routines. Moreover, the software is not open-source, which implicitly limits its development to a core set of maintainers and is not freely accessible to the broader community [e.g., @schrape2017a]. Similar platforms are available from companies that manufacture data loggers (e.g., [YSI](https://www.ysi.com/), [HOBO](https://www.onsetcomp.com/products/software/hoboware)), all of which are specific to the monitoring equipment and not broadly transferable. Alternative publicly funded software and data services are provided by the Consortium of Universities for the Advancement of Hydrologic Science ([CUAHSI](https://www.cuahsi.org/data-services/solutions)). Services provided by CUAHSI include data discovery, archiving, cloud computing, and analysis, with many of the services available in open source environments (e.g., [Python](https://www.python.org/)). However, the services provided by CUAHSI are meant to address a variety of different resources and use cases, none of which are immediately related to quality control reporting and data submission to public institutions. As such, Specific software solutions to address these needs and that leverage existing tools available in a rich open-source environment are clearly needed."
 
-3. L87-99 appears to should have been part of the introduction, highlighting what the MassWateR brings onboard. 
+2.  Make appropriate citations to literature sources. For example, in L26 and L29, you talk about an Act and an EU framework whose sources are not cited. The same applies to L39-40, where you argue out why this communication could be important but without any supporting citation(s). Similar omissions are evident in the DISCUSSION where you should make appropriate citation of the "community of practice established" and any outcomes (L521-537, and so forth).
 
-__Response__:
+**Response**: We have added citations where needed. Specifically, line 26 includes a link to a description of the US Clean Water Act ([33 USC § 1251 et seq.](https://uscode.house.gov/view.xhtml?path=/prelim@title33/chapter26&edition=prelim), note that there is no citation provided in the references because this is legislative code), line 29 includes a citation to the European Water Framework Directive [Directive 2000/60/EC of the European Parliament and of the Council of 23 October 2000, @pollard1998],
 
-4. Figure 1 could best be presented as a flow/block diagram.
+3.  L87-99 appears to should have been part of the introduction, highlighting what the MassWateR brings onboard.
 
-__Response__:
+**Response**: This paragraph and the additions shown above were moved to the introduction.
 
-5. For Table 4, it would be important to provide all the parameters tested as a supplementary file to support the submission. Please ensure that the full details of the algorithms designed are provided, and where there are restrictions, it should otherwise be stated.
+4.  Figure 1 could best be presented as a flow/block diagram.
 
-__Response__:
+**Response**:
 
-6. To improve the chances of manuscript suitability for PLOS ONE, ensure that the criteria listed for manuscript types (https://journals.plos.org/plosone/s/submission-guidelines#loc-methods-software-databases-and-tools) are met. i.e. Utility, Validation and Availability for articles describing new/improved METHODS, SOFTWARE, DATABASES, and TOOLS.
+5.  For Table 4, it would be important to provide all the parameters tested as a supplementary file to support the submission. Please ensure that the full details of the algorithms designed are provided, and where there are restrictions, it should otherwise be stated.
 
-__Response__:
+**Response**:
+
+6.  To improve the chances of manuscript suitability for PLOS ONE, ensure that the criteria listed for manuscript types (https://journals.plos.org/plosone/s/submission-guidelines#loc-methods-software-databases-and-tools) are met. i.e. Utility, Validation and Availability for articles describing new/improved METHODS, SOFTWARE, DATABASES, and TOOLS.
+
+**Response**:
 
 ## Reviewer 1
 
 The paper describes a new R package for the processing of water quality information, mainly following US standards, but could be adapted for other regions. It is well written and easy to follow. I have only a few minor comments. Several of the figures were missing from the submission, so I could not check them (Figure 3, and Figure 5 following).
 
-__Response__:
+**Response**: Thank you for your review comments. We have provided responses below. Please note that some of the figures provided in the journal submission system can only be viewed by selecting the download link on the page for each figure. I have verified that all figures were present in the original submission and the revision.
 
 L27 and 29 please cite respective regulatory frameworks
 
-__Response__:
+**Response**: References were added for both the Clean Water Act and Water Framework Directive.
 
-L108 should be „their data in several ways“
+L108 should be "their data in several ways"
 
-__Response__:
+**Response**: Accepted suggestion.
 
-L109 should be „outlier checks“
+L109 should be "outlier checks"
 
-__Response__:
+**Response**: Edited the sentence as follows: "The first step, QC screening, is often iterative as a user can modify parts of the raw data based on messages from the data import functions or checks for outliers."
 
 L137 should be function - spelling error
 
-__Response__:
+**Response**: Corrected.
 
-L327 should be „to evaluate“
+L327 should be "to evaluate"
 
-__Response__:
+**Response**: Edited the sentence as follows: "The QC checks for frequency and completeness can be used to evaluate if..."
 
-L334-335 I guess more correct would be to state „to verify that the parameter is below a certain threshold, e.g. below detection limit“. Even if the parameter has a value of zero - the parameter itself is not absent
+L334-335 I guess more correct would be to state "to verify that the parameter is below a certain threshold, e.g. below detection limit". Even if the parameter has a value of zero - the parameter itself is not absent
 
-__Response__:
+**Response**: Edited as follows: "Measurements in the field to verify that the parameter is below a certain threshold, e.g., below the detection limit of the field equipment"
 
 336-337 same
 
-__Response__:
+**Response**: Edited as follows: "Laboratory samples to verify that the parameter is below a certain threshold, e.g., below the detection limit of the laboratory analysis method"
 
-338-339 More correct would be „to assess the similarity of values, i.e. precision is high. (Precision is a value that is calculated from bot measurements - do not understand how each measurement can have its own precision)
+338-339 More correct would be "to assess the similarity of values, i.e. precision is high. (Precision is a value that is calculated from bot measurements - do not understand how each measurement can have its own precision)
 
-__Response__:
+**Response**: Accepted suggestion and made a similar edit for lab duplicates.
 
-385 Add: „in red in Table 3 show…“
+385 Add: "in red in Table 3 show..."
 
-__Response__:
+**Response**: Accepted suggestion.
 
-439 spelling „can be“
+439 spelling "can be"
 
-__Response__:
+**Response**: Corrected.
 
 506 I guess public use is better than public consumption
 
-__Response__:
+**Response**: Edited the sentence as follows: "...and made accessible for public use."
 
 ## Reviewer 2
 
 The availability of reliable monitoring data is the basis of scientific research. This study collected discrete surface water quality data generated by MassWateR software package and analyzed the trend of parameters. The study has some fundamental significance. However, this paper is more like a technical manual than a scientific research paper. Therefore, I would recommend the authors to submit the paper to a technical journal rather than a research-oriented journal.
 
-__Response__:
+**Response**: Thank you for taking the time to review our paper. Based on the opinion of the academic editor, this paper is considered to be of sufficient interest to the readership of the journal. Additionally, the paper is not written as a research article and was submitted as a software manuscript under the acceptable formats considered by the journal (see [here](https://journals.plos.org/plosone/s/submission-guidelines#loc-methods-software-databases-and-tools)). The format of these submissions is notably different from those of conventional research articles. In particular, papers describing software must demonstrate utility, validation, and availability. Please see our comment to the academic editor above regarding these requirements.
 
 In addition, the transferability of the developed tool needs to be demonstrated and analyzed, which is directly related to its application value. The authors should give concrete examples in this area;
 
-__Response__:
+**Response**: Thank you for this suggestion. In our original submission, we provided substantial text describing how MassWateR can be used in more generic applications, i.e., its transferability. This information was provided in the discussion on lines 538-556, where specific considerations were noted for how users could apply the software to novel datasets. Truthfully, we are not yet aware of specific applications of MassWateR outside of our core user base, but our intention of publishing this work in the primary literature was to reach a broader audience and thereby promote transferibility of the software. We are confident that the software can be broadly applied given the relatively minor limitations for its use outside of Massachusetts. Additionally, the software has been downloaded over 4000 times from CRAN as of this wwriting, which suggests many others have found the software transferable.
 
 Finally, the quality of the authors' images is so poor that improving the clarity is very necessary.
 
-__Response__: 
+**Response**: Please note that the article submission system greatly reduces the quality of the submitted figures at the end of the manuscript. The original, high-resolution figures can be viewed by clicking the link on the top of the page for each figure. Several are also provided as .svg files, following the journal guidelines. Previews for these figures are not provided in the PDF and they can only be viewed by downloading each file.
+
+# References {.unnumbered}
