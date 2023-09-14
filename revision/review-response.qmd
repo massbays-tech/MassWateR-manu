@@ -40,7 +40,7 @@ Though one of the reviewers recommended a complete rejection, I found that this 
 
 4.  Figure 1 could best be presented as a flow/block diagram.
 
-**Response**:
+**Response**: Figure 1 has been reconfigured as a flow diagram, although emphasis remains in the text that a user can engage with the package using one to any of the steps in the diagram.
 
 5.  For Table 4, it would be important to provide all the parameters tested as a supplementary file to support the submission. Please ensure that the full details of the algorithms designed are provided, and where there are restrictions, it should otherwise be stated.
 
