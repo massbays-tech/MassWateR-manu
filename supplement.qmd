@@ -1,0 +1,81 @@
+---
+format: 
+  docx:
+    reference-doc: my_styles.docx
+    number-sections: true
+title: "*Supplement* MassWateR: Improving quality control, analysis, and sharing of water quality data"
+bibliography: refs.bib
+csl: plos-one.csl
+crossref:
+  fig-title: Fig
+  fig-prefix: Fig 
+author: 
+  - Marcus W Beck:
+      email: mbeck@tbep.org
+      institute: [TBEP]
+      correspondence: true
+  - Benjamen Wetherill:
+      email: bwetherill@acasak.com 
+      institute: [ACA]
+      correspondence: false
+  - Jillian Carr:
+      email: Jillian.Carr@umb.edu
+      institute: [MASS]
+      correspondence: false
+ 
+institute:
+  - TBEP: Tampa Bay Estuary Program, St. Petersburg, Florida, USA
+  - ACA: ACASAK Consulting, Boston, Massachusetts USA
+  - MASS: Massachusetts Bays National Estuary Partnership, Boston, Massachusetts, USA
+
+filters: 
+  - templates/scholarly-metadata.lua
+  - templates/author-info-blocks.lua
+
+knitr:
+  opts_chunk: 
+    fig.path: 'images/'
+    
+execute: 
+  echo: false
+  warning: false
+  message: false
+  ft.keepnext: false
+  ft.align: left
+  fig-format: svg
+  fig-dpi: 300
+---
+
+```{r}
+#| include: false
+library(MassWateR)
+library(dplyr)
+library(here)
+```
+
+```{r}
+#| tbl-cap: "Complete list of parameters and units that can be used with MassWateR.  Parameters can be named using the `Simple Parameter` or the `WQX Parameter` convention.  Only one unit of measure can be used per parameter. WQX: Water Quality Exchange."
+#| label: tbl-params
+paramsMWR %>% 
+  select(`Simple Parameter`, `WQX Parameter`, `Units of measure`) %>% 
+  arrange(`Simple Parameter`, .locale = 'en') %>% 
+  knitr::kable(.)
+```
+
+```{r}
+#| tbl-cap: "The sample file included with MassWateR for the data quality objectives for accuracy."
+#| label: tbl-acc
+
+accpth <- system.file("extdata/ExampleDQOAccuracy.xlsx", package = "MassWateR")
+accdat <- readMWRacc(accpth, warn = F, runchk = F)
+knitr::kable(accdat)
+```
+
+```{r}
+#| tbl-cap: "The sample file included with MassWateR for the data quality objectives for frequency and completeness."
+#| label: tbl-frecom
+frecompth <- system.file("extdata/ExampleDQOFrequencyCompleteness.xlsx", package = "MassWateR")
+frecomdat <- readMWRfrecom(frecompth, warn = F, runchk = F)
+knitr::kable(frecomdat)
+```
+

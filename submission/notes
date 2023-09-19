@@ -4,3 +4,5 @@
 * Replace mail symbol for corresponding author to asterisk
 * Key words added on submission: quality control; open source; water quality; R package; data analysis; reproducibility
 * Fix spelling of BW first name to Benjamen, correct in manu but incorrect on form entry submission
+* Fix tables in supplement (bold header, remove extra spacing, add S to caption)
+* Remove line numbers in supplement

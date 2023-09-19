@@ -3,7 +3,6 @@ format:
   docx:
     reference-doc: response_styles.docx
 bibliography: ../refs.bib
-csl: ../plos-one.csl
 
 execute: 
   echo: false
@@ -40,8 +39,9 @@ Line 29 includes a citation to the European Water Framework Directive [Directive
 
 Line 40 includes the following citations: @kinzelman2003, @Wagner06, @zhang2006.
 
-Lines 521-547 include ciitations: 
+Lines 521-537 include the following citations: @Meyer22, @whitehead2007, @list2017, @Wickham16
 
+Additional citations were added later in the discussion: @DeCicco22, @Wagner06
 
 3.  L87-99 appears to should have been part of the introduction, highlighting what the MassWateR brings onboard.
 
@@ -53,7 +53,7 @@ Lines 521-547 include ciitations:
 
 5.  For Table 4, it would be important to provide all the parameters tested as a supplementary file to support the submission. Please ensure that the full details of the algorithms designed are provided, and where there are restrictions, it should otherwise be stated.
 
-**Response**:
+**Response**: A supplement file was created to accompany the main manuscript, including tables for the parameters used by MassWateR and the sample files included with the package for the data quality objectives for accuracy, frequency, and completeness. Also note that the specific QC checks used by the package were previously described in the main text (e.g., lab spikes, lab blanks, etc.).
 
 6.  To improve the chances of manuscript suitability for PLOS ONE, ensure that the criteria listed for manuscript types (https://journals.plos.org/plosone/s/submission-guidelines#loc-methods-software-databases-and-tools) are met. i.e. Utility, Validation and Availability for articles describing new/improved METHODS, SOFTWARE, DATABASES, and TOOLS.
 
