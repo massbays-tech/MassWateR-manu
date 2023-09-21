@@ -57,7 +57,13 @@ Additional citations were added later in the discussion: @DeCicco22, @Wagner06
 
 6.  To improve the chances of manuscript suitability for PLOS ONE, ensure that the criteria listed for manuscript types (https://journals.plos.org/plosone/s/submission-guidelines#loc-methods-software-databases-and-tools) are met. i.e. Utility, Validation and Availability for articles describing new/improved METHODS, SOFTWARE, DATABASES, and TOOLS.
 
-**Response**:
+**Response**: We have verified that our manuscript adheres to the utility, validation, and availability criteria for the article type. Below are descriptions of how these criteria are met:
+
+*Utility:* The MassWateR package provides needed utility for the community, as established in the introductory text. both in the original submission and the additions provided in the revision. In particular, the package provides a repeatable and efficient means for generating QC reports to ensure the water quality data are of sufficient accuracy and precision needed for integration into larger databases (i.e., WQX). As noted, we are unaware of any existing tools that provide this functionality.
+
+*Validation*: MassWateR achieves its intended uses as verified by adoption by the larger community of practice, detailed in the text. In addition, the package has been downloaded over 4000 times since its availability on CRAN in January 2023. This provides a robust indication that those outside of our community of practice are also applying MassWateR for its intended use. Finally, we describe the possible applications for the package in detail in the manuscript (e.g., QC report generation including a figure showing a portion of the report, submission to WQX, etc.).
+
+*Availability*: The software is entirely open -source and available for download through [CRAN](https://cran.r-project.org/package=MassWateR), [GitHub](https://github.com/massbays-tech/MassWateR), and [R-Universe](https://fawda123.r-universe.dev/MassWateR) Numerous links and citations are included throughout the text. The license applied to MassWateR is CC0 1.0, making the code available to the world-wide public domain.
 
 ## Reviewer 1
 
