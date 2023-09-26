@@ -6,3 +6,4 @@
 * Fix spelling of BW first name to Benjamen, correct in manu but incorrect on form entry submission
 * Fix tables in supplement (bold header, remove extra spacing, add S to caption)
 * Remove line numbers in supplement
+* Make sure all tiff figures are compress, e.g., magick Fig8.tiff -compress LZW Fig8.tiff
