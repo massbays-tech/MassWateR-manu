@@ -1,3 +1,5 @@
 # MassWateR-manu
 
-Materials for a manuscript describing the MassWateR R package: [current draft](https://github.com/massbays-tech/MassWateR-manu/raw/main/manu-draft.docx)
+Materials for a manuscript describing the MassWateR R package
+
+<https://doi.org/10.1371/journal.pone.0293737>
